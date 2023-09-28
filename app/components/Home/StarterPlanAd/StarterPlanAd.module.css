@@ -1,0 +1,6 @@
+/* sm screen */
+@media screen and (max-width: 420px) {
+  .ad_img {
+    display: none;
+  }
+}

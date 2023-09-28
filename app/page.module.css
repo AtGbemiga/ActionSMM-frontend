@@ -1,0 +1,21 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: ffffff;
+}
+.we_manage_container {
+  width: 100%;
+  margin-top: 3rem;
+}
+.starter_plan_ad_container {
+  display: flex;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.stats {
+  width: 100%;
+  height: fit-content;
+  margin-top: 3rem;
+}

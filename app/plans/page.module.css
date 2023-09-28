@@ -1,0 +1,10 @@
+.mappedCard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  place-items: center;
+  row-gap: 2rem;
+}
+.enterpriseAd {
+  padding: 3rem;
+  text-align: center;
+}

@@ -1,0 +1,12 @@
+.section {
+  display: flex;
+}
+.section_reverse {
+  display: flex;
+  flex-direction: row-reverse;
+  column-gap: 3rem;
+}
+.last_section {
+  display: flex;
+  column-gap: 3rem;
+}

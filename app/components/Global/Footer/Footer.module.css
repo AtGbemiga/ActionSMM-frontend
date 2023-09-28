@@ -1,0 +1,9 @@
+.ul {
+  display: flex;
+  background-color: #222222;
+  color: #aaaaaa;
+  margin: 0;
+  padding: 4rem;
+  list-style: none;
+  gap: 2rem;
+}
