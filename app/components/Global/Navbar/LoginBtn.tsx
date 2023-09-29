@@ -4,7 +4,7 @@ import Link from "next/link";
 export const LoginBtn = () => {
   return (
     <Button>
-      <Link href="#">Login</Link>
+      <Link href="/login">Login</Link>
     </Button>
   );
 };
