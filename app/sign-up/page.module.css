@@ -1,0 +1,25 @@
+.main {
+  display: flex;
+  justify-content: center;
+  border: 3px solid red;
+}
+.main > article {
+  padding: 5rem;
+}
+/* .form {
+  border: 3px solid red;
+} */
+.extra_info:not(a[href="/login"]) {
+  text-align: center;
+  color: #a6a6a6;
+  font-size: 0.7rem;
+  padding: 0.9rem;
+}
+
+/* sm screen */
+@media screen and (max-width: 420px) {
+  .main > article {
+    padding: 2rem;
+    box-shadow: none !important;
+  }
+}

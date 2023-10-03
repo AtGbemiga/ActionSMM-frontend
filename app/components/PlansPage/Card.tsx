@@ -2,6 +2,7 @@ import styles from "./Card.module.css";
 import star from "../../../public/star.svg";
 import Image from "next/image";
 import { PlanDetails } from "@/app/typesAndInterfaces/planDetails";
+import Link from "next/link";
 export const Card = ({
   name,
   accounts,
@@ -38,9 +39,9 @@ export const Card = ({
         </li>
       </ul>
       <div className="card-body">
-        <a href="#" className="btn btn-primary w-100">
+        <Link href="#" className="btn btn-primary w-100">
           Card link
-        </a>
+        </Link>
       </div>
     </div>
   );

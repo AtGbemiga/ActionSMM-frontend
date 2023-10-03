@@ -19,15 +19,20 @@ export default function Home(): JSX.Element {
         <article className={styles.starter_plan_ad_container}>
           <StarterPlanAd />
         </article>
-        {/* <section style={{ border: "3px solid red" }}>
+        <section
+          style={{
+            border: "3px solid red",
+            marginTop: "3rem",
+            marginBottom: "3rem",
+          }}
+        >
           <PostShowcase />
-        </section> */}
+        </section>
         <article>
           <h3 className="text-dark text-center">How it works</h3>
           <HowItWorks />
         </article>
         <section className={`${styles.stats}`}>
-          {/* style={{ border: "3px solid green" }} */}
           <Stats />
         </section>
       </main>

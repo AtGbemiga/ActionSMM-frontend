@@ -4,32 +4,42 @@ import { Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-const PostShowcase = () => {
+
+import img1 from "../../../../public/hero-img-placeholders.svg";
+import img2 from "../../../../public/testLogo.jpg";
+import img3 from "../../../../public/hero-img-placeholders.svg";
+import Image from "next/image";
+
+const PostShowcase = (): JSX.Element => {
+  const testArr = [img1, img2, img3];
   return (
     <Swiper
       modules={[Navigation, Autoplay]}
       spaceBetween={0}
       slidesPerView={1}
       navigation
+      allowTouchMove
       autoplay={{
         delay: 2500,
-        disableOnInteraction: true,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
       }}
       style={{
-        height: "100%",
-        minHeight: 300,
+        height: "25rem",
+        minHeight: "200",
+        width: "50vw",
       }}
     >
-      <SwiperSlide>
-        <div style={{ width: 700, height: 200, backgroundColor: "#237845" }}>
-          slide 4
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div style={{ width: 700, height: 200, backgroundColor: "#947300" }}>
-          slide 5
-        </div>
-      </SwiperSlide>
+      {testArr.map((item, index) => (
+        <SwiperSlide key={index}>
+          <Image
+            src={item}
+            alt="hdydj jcj"
+            fill
+            style={{ color: "black" }}
+          ></Image>
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 };
