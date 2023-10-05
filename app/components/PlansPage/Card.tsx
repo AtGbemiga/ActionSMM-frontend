@@ -39,7 +39,7 @@ export const Card = ({
         </li>
       </ul>
       <div className="card-body">
-        <Link href="#" className="btn btn-primary w-100">
+        <Link href={`/form/${name}`} className="btn btn-primary w-100">
           Card link
         </Link>
       </div>
