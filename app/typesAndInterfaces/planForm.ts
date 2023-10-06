@@ -4,9 +4,9 @@ export interface PlanForm {
   personalName: string;
   businessName: string;
   website?: string;
-  aboutYourBusiness?: string;
-  cta?: string[];
-  startDate?: string;
+  aboutYourBusiness: string;
+  cta: string[];
+  startDate?: Date | null;
   dueDate?: string;
   socialMediaPics?: string[];
   accounts?: {

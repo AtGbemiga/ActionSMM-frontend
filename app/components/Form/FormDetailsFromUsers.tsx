@@ -3,6 +3,8 @@ import { useState } from "react";
 import { PlanForm } from "@/app/typesAndInterfaces/planForm";
 import { planFormFunc } from "@/lib/planForm";
 import Cookies from "js-cookie";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export const FormDetailsFromUsers = ({
   name,
@@ -18,7 +20,7 @@ export const FormDetailsFromUsers = ({
     website: "",
     aboutYourBusiness: "",
     cta: [],
-    startDate: "",
+    startDate: null,
     dueDate: "",
     socialMediaPics: [],
     // accounts: {
@@ -71,10 +73,10 @@ export const FormDetailsFromUsers = ({
     // formDataBody.append("price", formData.price);
     formDataBody.append("personalName", formData.personalName);
     formDataBody.append("businessName", formData.businessName);
-    // formDataBody.append("website", formData.website || "");
-    // formDataBody.append("aboutYourBusiness", formData.aboutYourBusiness);
-    // formDataBody.append("cta", JSON.stringify(formData.cta));
-    // formDataBody.append("startDate", formData.startDate || "");
+    formDataBody.append("website", formData.website || "");
+    formDataBody.append("aboutYourBusiness", formData.aboutYourBusiness);
+    formDataBody.append("cta", JSON.stringify(formData.cta));
+    formDataBody.append("startDate", formData.startDate?.toISOString() || "");
     // formDataBody.append("dueDate", formData.dueDate || "");
     // formDataBody.append(
     //   "socialMediaPics",
@@ -156,7 +158,7 @@ export const FormDetailsFromUsers = ({
                 business Name error here
               </div>
             </div>
-            {/* <div className="mb-3">
+            <div className="mb-3">
               <label htmlFor="website" className="form-label">
                 Website
               </label>
@@ -172,8 +174,8 @@ export const FormDetailsFromUsers = ({
               <div id="websiteHelp" className="form-text">
                 website error here
               </div>
-            </div> */}
-            {/* <div className="mb-3">
+            </div>
+            <div className="mb-3">
               <label htmlFor="aboutYourBusiness" className="form-label">
                 aboutYourBusiness
               </label>
@@ -188,8 +190,8 @@ export const FormDetailsFromUsers = ({
               <div id="aboutYourBusinessHelp" className="form-text">
                 aboutYourBusiness error here
               </div>
-            </div> */}
-            {/* <div className="mb-3">
+            </div>
+            <div className="mb-3">
               <label htmlFor="cta" className="form-label">
                 cta
               </label>
@@ -205,7 +207,7 @@ export const FormDetailsFromUsers = ({
               <div id="ctaHelp" className="form-text">
                 cta error here
               </div>
-            </div> */}
+            </div>
             <button onClick={() => setStep(2)} className="btn btn-primary">
               Next
             </button>
@@ -214,22 +216,23 @@ export const FormDetailsFromUsers = ({
       case 2:
         return (
           <section>
-            {/* <div className="mb-3">
+            <div className="mb-3">
               <label htmlFor="startDate" className="form-label">
                 Start Date
               </label>
-              <input
-                type="date"
-                className="form-control"
-                id="startDate"
-                aria-describedby="startDateHelp"
-                onChange={handleInputChange}
-                value={formData.startDate}
+              <DatePicker
+                selected={formData.startDate}
+                onChange={(date) =>
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    startDate: date,
+                  }))
+                }
               />
               <div id="startDateHelp" className="form-text">
                 Start Date error here
               </div>
-            </div> */}
+            </div>
             {/* <div className="mb-3">
               <label htmlFor="dueDate" className="form-label">
                 Due Date
