@@ -5,6 +5,8 @@ export const planFormFunc = async (formDataBody: FormData) => {
 
   const token = Cookies.get("token");
 
+  console.log(formDataBody);
+
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -20,8 +22,6 @@ export const planFormFunc = async (formDataBody: FormData) => {
       `Request failed with status ${res.status}, ${exactErrorMsg}`
     );
   }
-
-  console.log(formDataBody);
 
   const data = await res.json();
 

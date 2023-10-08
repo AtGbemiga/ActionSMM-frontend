@@ -21,14 +21,14 @@ export const FormDetailsFromUsers = ({
     aboutYourBusiness: "",
     cta: [],
     startDate: null,
-    dueDate: "",
+    dueDate: null,
     socialMediaPics: [],
-    // accounts: {
-    //   facebook: "",
-    //   instagram: "",
-    //   linkedIn: "",
-    //   x: "",
-    // },
+    accounts: {
+      one: "",
+      two: "",
+      three: "",
+      four: "",
+    },
   });
   const token = Cookies.get("token");
 
@@ -52,13 +52,56 @@ export const FormDetailsFromUsers = ({
   }
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+    const { name, value, type } = e.target;
+    // if (type === "file") {
+    //   setFormData((prevFormData) => ({
+    //     ...prevFormData,
+    //     [name]: e.target.files,
+    //   }));
+    // }
+
+    if (name === "accountsOne") {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        accounts: {
+          ...prevFormData.accounts,
+          one: value,
+        },
+      }));
+    } else if (name === "accountsTwo") {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        accounts: {
+          ...prevFormData.accounts,
+          two: value,
+        },
+      }));
+    } else if (name === "accountsThree") {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        accounts: {
+          ...prevFormData.accounts,
+          three: value,
+        },
+      }));
+    } else if (name === "accountsFour") {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        accounts: {
+          ...prevFormData.accounts,
+          four: value,
+        },
+      }));
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -73,16 +116,25 @@ export const FormDetailsFromUsers = ({
     // formDataBody.append("price", formData.price);
     formDataBody.append("personalName", formData.personalName);
     formDataBody.append("businessName", formData.businessName);
-    formDataBody.append("website", formData.website || "");
+    formDataBody.append("website", formData.website ?? "");
     formDataBody.append("aboutYourBusiness", formData.aboutYourBusiness);
     formDataBody.append("cta", JSON.stringify(formData.cta));
-    formDataBody.append("startDate", formData.startDate?.toISOString() || "");
-    // formDataBody.append("dueDate", formData.dueDate || "");
-    // formDataBody.append(
-    //   "socialMediaPics",
-    //   JSON.stringify(formData.socialMediaPics)
-    // );
-    // formDataBody.append("accounts", JSON.stringify(formData.accounts));
+    formDataBody.append("startDate", formData.startDate?.toISOString() ?? "");
+    const dueDate = formData.startDate?.getTime()
+      ? new Date(formData.startDate.getTime() + 30 * 24 * 60 * 60 * 1000)
+      : null;
+    formDataBody.append("dueDate", dueDate?.toISOString() || "");
+    formDataBody.append("accounts.one", formData.accounts.one ?? "");
+    formDataBody.append("accounts.two", formData.accounts.two ?? "");
+    formDataBody.append("accounts.three", formData.accounts.three ?? "");
+    formDataBody.append("accounts.four", formData.accounts.four ?? "");
+
+    formDataBody.append(
+      "socialMediaPics",
+      JSON.stringify(formData.socialMediaPics)
+    );
+    console.log(formData.accounts);
+
     await planFormFunc(formDataBody);
     console.log("submitted");
   };
@@ -228,28 +280,180 @@ export const FormDetailsFromUsers = ({
                     startDate: date,
                   }))
                 }
+                // make the min date 3 days from now
+                minDate={new Date(new Date().setDate(new Date().getDate() + 3))}
+                placeholderText="Start Date"
               />
               <div id="startDateHelp" className="form-text">
                 Start Date error here
               </div>
             </div>
-            {/* <div className="mb-3">
-              <label htmlFor="dueDate" className="form-label">
-                Due Date
-              </label>
-              <input
-                type="date"
-                className="form-control"
-                id="dueDate"
-                aria-describedby="dueDateHelp"
-                onChange={handleInputChange}
-                value={formData.dueDate}
-              />
-              <div id="dueDateHelp" className="form-text">
-                Due Date error here
-              </div>
-            </div> */}
-            {/* <div className="mb-3">
+            {(name === "Starter" || name === "Starter%20Plus") && (
+              <>
+                <div className="mb-3">
+                  <label htmlFor="accounts" className="form-label">
+                    accounts
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="accounts"
+                    aria-describedby="accountsHelp"
+                    onChange={handleInputChange}
+                    value={formData.accounts.one}
+                    name="accountsOne"
+                  />
+                  <div id="accountsHelp" className="form-text">
+                    accounts error here
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="accounts" className="form-label">
+                    accounts
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="accounts"
+                    aria-describedby="accountsHelp"
+                    onChange={handleInputChange}
+                    value={formData.accounts.two}
+                    name="accountsTwo"
+                  />
+                  <div id="accountsHelp" className="form-text">
+                    accounts error here
+                  </div>
+                </div>
+              </>
+            )}
+            {(name === "Pro" || name === "Pro%20Plus") && (
+              <>
+                <div className="mb-3">
+                  <label htmlFor="accounts" className="form-label">
+                    accounts
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="accounts"
+                    aria-describedby="accountsHelp"
+                    onChange={handleInputChange}
+                    value={formData.accounts.one}
+                    name="accountsOne"
+                  />
+                  <div id="accountsHelp" className="form-text">
+                    accounts error here
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="accounts" className="form-label">
+                    accounts
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="accounts"
+                    aria-describedby="accountsHelp"
+                    onChange={handleInputChange}
+                    value={formData.accounts.two}
+                    name="accountsTwo"
+                  />
+                  <div id="accountsHelp" className="form-text">
+                    accounts error here
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="accounts" className="form-label">
+                    accounts
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="accounts"
+                    aria-describedby="accountsHelp"
+                    onChange={handleInputChange}
+                    value={formData.accounts.three}
+                    name="accountsThree"
+                  />
+                  <div id="accountsHelp" className="form-text">
+                    accounts error here
+                  </div>
+                </div>
+              </>
+            )}
+            {(name === "Supreme" || name === "Supreme%20Plus") && (
+              <>
+                <div className="mb-3">
+                  <label htmlFor="accounts" className="form-label">
+                    accounts
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="accounts"
+                    aria-describedby="accountsHelp"
+                    onChange={handleInputChange}
+                    value={formData.accounts.one}
+                    name="accountsOne"
+                  />
+                  <div id="accountsHelp" className="form-text">
+                    accounts error here
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="accounts" className="form-label">
+                    accounts
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="accounts"
+                    aria-describedby="accountsHelp"
+                    onChange={handleInputChange}
+                    value={formData.accounts.two}
+                    name="accountsTwo"
+                  />
+                  <div id="accountsHelp" className="form-text">
+                    accounts error here
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="accounts" className="form-label">
+                    accounts
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="accounts"
+                    aria-describedby="accountsHelp"
+                    onChange={handleInputChange}
+                    value={formData.accounts.three}
+                    name="accountsThree"
+                  />
+                  <div id="accountsHelp" className="form-text">
+                    accounts error here
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="accounts" className="form-label">
+                    accounts
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="accounts"
+                    aria-describedby="accountsHelp"
+                    onChange={handleInputChange}
+                    value={formData.accounts.four}
+                    name="accountsFour"
+                  />
+                  <div id="accountsHelp" className="form-text">
+                    accounts error here
+                  </div>
+                </div>
+              </>
+            )}
+            <div className="mb-3">
               <label htmlFor="socialMediaPics" className="form-label">
                 Social Media Pics
               </label>
@@ -266,25 +470,7 @@ export const FormDetailsFromUsers = ({
               <div id="socialMediaPicsHelp" className="form-text">
                 Social Media error here
               </div>
-            </div> */}
-            {/* <div className="mb-3">
-              <label htmlFor="accounts" className="form-label">
-                accounts
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="accounts"
-                aria-describedby="accountsHelp"
-                onChange={handleInputChange}
-                value={formData.accounts?.facebook}
-                name="accounts"
-              />
-              <div id="accountsHelp" className="form-text">
-                accounts error here
-              </div>
-            </div> */}
-            <p>Debugging purpose</p>
+            </div>
             <button onClick={() => setStep(1)}>Back</button>
             <button type="submit" className="btn btn-primary">
               Submit
