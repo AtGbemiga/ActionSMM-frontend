@@ -5,6 +5,8 @@ import { planFormFunc } from "@/lib/planForm";
 import Cookies from "js-cookie";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Styles from "./Form.module.css";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 export const FormDetailsFromUsers = ({
   name,
@@ -20,9 +22,9 @@ export const FormDetailsFromUsers = ({
     website: "",
     aboutYourBusiness: "",
     cta: [],
-    startDate: null,
-    dueDate: null,
-    socialMediaPics: [],
+    startDate: undefined,
+    dueDate: undefined,
+    socialMediaPics: undefined,
     accounts: {
       one: "",
       two: "",
@@ -31,39 +33,33 @@ export const FormDetailsFromUsers = ({
     },
   });
   const token = Cookies.get("token");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   function handlePrice() {
     switch (name) {
       case "Starter":
-        return "\u20A6 20,000";
+        return "20,000";
       case "Pro":
-        return "\u20A6 25,000";
+        return "25,000";
       case "Supreme":
-        return "\u20A6 30,000";
+        return "30,000";
       case "Starter Plus" || "Starter%20Plus":
-        return "\u20A6 25,000";
+        return "25,000";
       case "Pro Plus" || "Pro%20Plus":
-        return "\u20A6 30,000";
+        return "30,000";
       case "Supreme Plus" || "Supreme%20Plus":
-        return "\u20A6 34,500";
+        return "34,500";
       default:
         return "";
     }
   }
 
   const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value, type } = e.target;
-    // if (type === "file") {
-    //   setFormData((prevFormData) => ({
-    //     ...prevFormData,
-    //     [name]: e.target.files,
-    //   }));
-    // }
-
+    const { name, value } = e.target;
     if (name === "accountsOne") {
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -104,6 +100,17 @@ export const FormDetailsFromUsers = ({
     }
   };
 
+  const handleFileChange = (e: React.FormEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement & {
+      files: FileList;
+    };
+    const filesArray = Array.from(target.files);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      socialMediaPics: target.files[0],
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -113,13 +120,13 @@ export const FormDetailsFromUsers = ({
 
     const formDataBody = new FormData();
     formDataBody.append("planName", formData.planName);
-    // formDataBody.append("price", formData.price);
+    formDataBody.append("price", formData.price ?? "");
     formDataBody.append("personalName", formData.personalName);
     formDataBody.append("businessName", formData.businessName);
     formDataBody.append("website", formData.website ?? "");
     formDataBody.append("aboutYourBusiness", formData.aboutYourBusiness);
     formDataBody.append("cta", JSON.stringify(formData.cta));
-    formDataBody.append("startDate", formData.startDate?.toISOString() ?? "");
+    formDataBody.append("startDate", formData.startDate?.toISOString() || "");
     const dueDate = formData.startDate?.getTime()
       ? new Date(formData.startDate.getTime() + 30 * 24 * 60 * 60 * 1000)
       : null;
@@ -128,15 +135,20 @@ export const FormDetailsFromUsers = ({
     formDataBody.append("accounts.two", formData.accounts.two ?? "");
     formDataBody.append("accounts.three", formData.accounts.three ?? "");
     formDataBody.append("accounts.four", formData.accounts.four ?? "");
-
-    formDataBody.append(
-      "socialMediaPics",
-      JSON.stringify(formData.socialMediaPics)
-    );
+    formDataBody.append("socialMediaPics", formData.socialMediaPics ?? "");
     console.log(formData.accounts);
 
     await planFormFunc(formDataBody);
     console.log("submitted");
+
+    // route to payments page after submission and pass name into the params
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("name", formData.planName);
+    params.set("price", formData.price || handlePrice());
+    console.log(params);
+
+    router.push(`/payment?${params}`);
   };
 
   const renderStep = () => {
@@ -160,7 +172,7 @@ export const FormDetailsFromUsers = ({
                 plan name error here
               </div>
             </div>
-            {/* <div className="mb-3">
+            <div className="mb-3">
               <label htmlFor="price" className="form-label">
                 Price
               </label>
@@ -168,14 +180,14 @@ export const FormDetailsFromUsers = ({
                 type="text"
                 className="form-control"
                 id="price"
-                value={handlePrice()}
+                value={`\u20A6${handlePrice()}`}
                 name="price"
                 disabled
               />
               <div id="priceHelp" className="form-text">
                 price error here
               </div>
-            </div> */}
+            </div>
             <div className="mb-3">
               <label htmlFor="personalName" className="form-label">
                 Personal Name
@@ -260,9 +272,12 @@ export const FormDetailsFromUsers = ({
                 cta error here
               </div>
             </div>
-            <button onClick={() => setStep(2)} className="btn btn-primary">
-              Next
-            </button>
+            <input
+              type="button"
+              onClick={() => setStep(2)}
+              className="btn btn-primary"
+              value="Next"
+            />
           </section>
         );
       case 2:
@@ -277,12 +292,13 @@ export const FormDetailsFromUsers = ({
                 onChange={(date) =>
                   setFormData((prevFormData) => ({
                     ...prevFormData,
-                    startDate: date,
+                    startDate: date || undefined,
                   }))
                 }
                 // make the min date 3 days from now
                 minDate={new Date(new Date().setDate(new Date().getDate() + 3))}
-                placeholderText="Start Date"
+                showIcon
+                className={Styles.datepicker}
               />
               <div id="startDateHelp" className="form-text">
                 Start Date error here
@@ -453,25 +469,26 @@ export const FormDetailsFromUsers = ({
                 </div>
               </>
             )}
+
+            {/* file upload here */}
             <div className="mb-3">
               <label htmlFor="socialMediaPics" className="form-label">
-                Social Media Pics
+                socialMediaPics
               </label>
               <input
                 type="file"
                 className="form-control"
                 id="socialMediaPics"
                 aria-describedby="socialMediaPicsHelp"
-                onChange={handleInputChange}
-                value={formData.socialMediaPics}
+                onChange={handleFileChange}
                 name="socialMediaPics"
-                multiple
               />
               <div id="socialMediaPicsHelp" className="form-text">
-                Social Media error here
+                socialMediaPics error here
               </div>
             </div>
-            <button onClick={() => setStep(1)}>Back</button>
+
+            <input type="button" value="Back" onClick={() => setStep(1)} />
             <button type="submit" className="btn btn-primary">
               Submit
             </button>

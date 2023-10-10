@@ -6,9 +6,9 @@ export interface PlanForm {
   website?: string;
   aboutYourBusiness: string;
   cta: string[];
-  startDate: Date | null;
-  dueDate: Date | null;
-  socialMediaPics?: string[];
+  startDate: Date | undefined;
+  dueDate: Date | undefined;
+  socialMediaPics?: File | undefined;
   accounts: {
     one?: string;
     two?: string;
