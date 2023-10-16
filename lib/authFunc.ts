@@ -1,8 +1,16 @@
-import { SignUp } from "@/app/typesAndInterfaces/signUp";
+import { Auth, AuthRes } from "@/app/typesAndInterfaces/auth";
 import Cookies from "js-cookie";
 
-export const signUp = async ({ email, password }: SignUp) => {
-  const url = "http://localhost:3000/api/v1/auth/register";
+export const authFunc = async (
+  { email, password }: Auth,
+  identifier: string
+): Promise<string> => {
+  let url;
+
+  // identifier is either login or signup
+  identifier === "login"
+    ? (url = "http://127.0.0.1:3000/api/v1/auth/login")
+    : (url = "http://127.0.0.1:3000/api/v1/auth/register");
 
   // attempt fetch
   const res = await fetch(url, {
@@ -21,11 +29,11 @@ export const signUp = async ({ email, password }: SignUp) => {
   console.log(email, password);
 
   // get good res at this stage
-  const data = await res.json();
+  const data: AuthRes = await res.json();
 
   // set cookies
   Cookies.set("token", data.token, {
-    expires: 7,
+    expires: 60,
     path: "/",
     secure: true,
     sameSite: "strict",
@@ -33,5 +41,5 @@ export const signUp = async ({ email, password }: SignUp) => {
 
   console.log(data);
 
-  return data;
+  return data.token;
 };

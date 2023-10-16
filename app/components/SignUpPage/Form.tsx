@@ -3,12 +3,14 @@ import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./SignUpPage.module.css";
 import { useState } from "react";
-import { signUp } from "@/lib/signUp";
 import { useRouter } from "next/navigation";
+import { authFunc } from "@/lib/authFunc";
 
 export const Form = (): JSX.Element => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const [error_msg, setError_msg] = useState("");
   const router = useRouter();
 
   function handleRegexCheck(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -16,22 +18,36 @@ export const Form = (): JSX.Element => {
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     //test pattern via regex
-    const res = pattern.test(e.target.value) ? e.target.value : "Fail";
-    // setEmail to either Pass or Fail strings
-    setEmail(res);
-    console.log(email);
+    // if regex fails, setError to true
+    !pattern.test(e.target.value) && setError(true);
+    // if regex passes, setError to false
+    pattern.test(e.target.value) && setError(false);
   }
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
     handleRegexCheck(e);
+    setEmail(e.target.value);
   }
 
   // disable submit button when no passing email or password
   const disable = password.length < 6 || email === "Fail";
 
+  function handleBlurEvent(e: React.FocusEvent<HTMLInputElement>): void {
+    if (email === undefined) {
+      setEmail("");
+      setError_msg("Email address is a required field.");
+    } else if (email !== undefined) {
+      const pattern =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      !pattern.test(e.target.value) &&
+        setError_msg("Enter a valid email address. For example: name@site.com");
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    await signUp({ email, password });
+    // string is an identifier, used to tell the Function what URL to use in the fetch.
+    await authFunc({ email, password }, "signup");
     router.push("/plans");
   }
 
@@ -60,22 +76,24 @@ export const Form = (): JSX.Element => {
             id="email"
             aria-describedby="basic-addon3 basic-addon4"
             onChange={handleInputChange}
+            onBlur={handleBlurEvent}
+            name="email"
+            autoComplete="off"
+            value={email}
+            required
+            aria-required
           />
-          {email !== "Fail" && email != "" && (
+          {email !== "" && email !== undefined && !error && (
             <FontAwesomeIcon
               icon={faCircleCheck}
               className={`${styles.font_awesome_icon} ms-1`}
             />
           )}
         </div>
-        {email === "Fail" && (
-          <div
-            className={`${styles.error_msg} form-text text-danger mb-2`}
-            id="basic-addon4"
-          >
-            Enter a valid email. E.g. ay@site.com
-          </div>
-        )}
+
+        <div className={`${styles.error_msg} form-text mb-2`} id="basic-addon4">
+          {error_msg}
+        </div>
       </div>
       <div className="mb-3">
         <label htmlFor="password" className="form-label">
@@ -99,8 +117,12 @@ export const Form = (): JSX.Element => {
             className="form-control"
             id="password"
             aria-describedby="basic-addon3 basic-addon4"
-            autoComplete="password"
+            name="password"
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="new-password"
+            value={password}
+            required
+            aria-required
           />
           {password !== "" && password.length >= 6 && (
             <FontAwesomeIcon
@@ -114,7 +136,7 @@ export const Form = (): JSX.Element => {
             className={`${styles.error_msg} form-text text-danger`}
             id="basic-addon4"
           >
-            Password must be at least 6 characters.
+            Select a password between 6 and 64 characters long.
           </div>
         )}
       </div>

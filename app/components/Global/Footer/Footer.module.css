@@ -7,3 +7,11 @@
   list-style: none;
   gap: 2rem;
 }
+.ul section li > * {
+  color: #aaaaaa;
+  text-decoration: none;
+}
+.ul section li > *:hover {
+  color: #ffffff;
+  text-decoration: none;
+}

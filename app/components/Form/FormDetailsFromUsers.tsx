@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PlanForm } from "@/app/typesAndInterfaces/planForm";
 import { planFormFunc } from "@/lib/planForm";
 import Cookies from "js-cookie";
@@ -59,7 +59,7 @@ export const FormDetailsFromUsers = ({
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
+    const { name, value, required } = e.target;
     if (name === "accountsOne") {
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -151,6 +151,26 @@ export const FormDetailsFromUsers = ({
     router.push(`/payment?${params}`);
   };
 
+  // if the switch case === 1 and enter is pressed but not all the required inputs are filled out, pop up with not all the inputs are filled out notice but if user is on the last input and its has regex passing content, move to switch case 2
+  // useEffect(() => {
+  //   const handleKeyUp = (event: MyEvent) => {
+  //     if (event !== null && event.event instanceof KeyboardEvent ) {
+  //       if (event.event.key === "Enter" ) {
+  //         console.log(`Logging key: ${event.event.key} to the console`);
+  //       }
+  //     } else if(event !== null && event.event.target instanceof HTMLInputElement){
+  //       const { name} = event.event.target;
+  //     }
+
+  //   };
+
+  //   window.addEventListener("keyup", handleKeyUp);
+
+  //   return () => {
+  //     window.removeEventListener("keyup", handleKeyUp);
+  //   };
+  // }, [step]);
+
   const renderStep = () => {
     switch (step) {
       case 1:
@@ -167,6 +187,7 @@ export const FormDetailsFromUsers = ({
                 value={name}
                 name="planName"
                 disabled
+                readOnly
               />
               <div id="planNameHelp" className="form-text">
                 plan name error here
@@ -183,6 +204,7 @@ export const FormDetailsFromUsers = ({
                 value={`\u20A6${handlePrice()}`}
                 name="price"
                 disabled
+                readOnly
               />
               <div id="priceHelp" className="form-text">
                 price error here
@@ -200,6 +222,8 @@ export const FormDetailsFromUsers = ({
                 value={formData.personalName}
                 onChange={handleInputChange}
                 name="personalName"
+                required
+                aria-required
               />
               <div id="personalNameHelp" className="form-text">
                 personal Name error here
@@ -217,6 +241,8 @@ export const FormDetailsFromUsers = ({
                 value={formData.businessName}
                 onChange={handleInputChange}
                 name="businessName"
+                required
+                aria-required
               />
               <div id="businessNameHelp" className="form-text">
                 business Name error here
@@ -250,6 +276,8 @@ export const FormDetailsFromUsers = ({
                 value={formData.aboutYourBusiness}
                 onChange={handleInputChange}
                 name="aboutYourBusiness"
+                required
+                aria-required
               />
               <div id="aboutYourBusinessHelp" className="form-text">
                 aboutYourBusiness error here
@@ -490,7 +518,7 @@ export const FormDetailsFromUsers = ({
 
             <input type="button" value="Back" onClick={() => setStep(1)} />
             <button type="submit" className="btn btn-primary">
-              Submit
+              Next
             </button>
           </section>
         );

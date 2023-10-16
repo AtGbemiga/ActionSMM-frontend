@@ -18,7 +18,7 @@ function NavMenu(): JSX.Element {
         <Container fluid>
           <Navbar.Brand href="/">
             <Image src={Logo} alt="Logo" width={50} height={50} priority />{" "}
-            ActionSMM
+            <span className="text-white">ActionSMM</span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
           <Navbar.Offcanvas
@@ -38,14 +38,18 @@ function NavMenu(): JSX.Element {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className={`${styles.nav_section_container}`}>
-                <section className={`${styles.nav_section}`}>
+                <div>
                   <HomeBtn />
+                </div>
+                <div>
                   <PlansBtn />
-                </section>
-                <section className={`${styles.nav_section}`}>
+                </div>
+                <div>
                   <LoginBtn />
+                </div>
+                <div>
                   <SignUpBtn />
-                </section>
+                </div>
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>

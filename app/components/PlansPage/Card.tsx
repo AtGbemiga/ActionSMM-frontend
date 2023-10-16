@@ -1,8 +1,11 @@
+"use client";
 import styles from "./Card.module.css";
 import star from "../../../public/star.svg";
 import Image from "next/image";
 import { PlanDetails } from "@/app/typesAndInterfaces/planDetails";
 import Link from "next/link";
+import Cookies from "js-cookie";
+
 export const Card = ({
   name,
   accounts,
@@ -13,6 +16,7 @@ export const Card = ({
   performance,
   price,
 }: PlanDetails): JSX.Element => {
+  const token = Cookies.get("token");
   return (
     <div className={`card ${styles.card}`}>
       <div className="card-body">
@@ -39,7 +43,11 @@ export const Card = ({
         </li>
       </ul>
       <div className="card-body">
-        <Link href={`/form/${name}`} className="btn btn-primary w-100">
+        <Link
+          type="button"
+          href={token ? `/form/${name}` : "/login"}
+          className="btn btn-primary w-100"
+        >
           Card link
         </Link>
       </div>

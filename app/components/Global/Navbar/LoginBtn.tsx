@@ -1,10 +1,13 @@
 import Button from "react-bootstrap/esm/Button";
 import Link from "next/link";
+import styles from "./Navbar.module.css";
 
-export const LoginBtn = () => {
+export const LoginBtn = (): JSX.Element => {
   return (
-    <Button>
-      <Link href="/login">Login</Link>
+    <Button variant="none">
+      <Link href="/login" className={styles.button}>
+        Login
+      </Link>
     </Button>
   );
 };
