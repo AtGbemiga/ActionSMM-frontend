@@ -1,0 +1,12 @@
+.linkContainer {
+  border: 3px solid yellow;
+  display: grid;
+}
+
+.linkContainer > a {
+  color: aliceblue;
+  margin: 0.3rem;
+  border: 1px solid red;
+  padding: 0.5rem;
+  text-decoration: none;
+}

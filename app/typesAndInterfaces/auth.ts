@@ -6,4 +6,5 @@ export interface Auth {
 
 export interface AuthRes {
   token: string;
+  email: string;
 }

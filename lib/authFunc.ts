@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 export const authFunc = async (
   { email, password }: Auth,
   identifier: string
-): Promise<string> => {
+): Promise<AuthRes> => {
   let url;
 
   // identifier is either login or signup
@@ -26,7 +26,6 @@ export const authFunc = async (
       `Request failed with status ${res.status}, ${exactErrorMsg}`
     );
   }
-  console.log(email, password);
 
   // get good res at this stage
   const data: AuthRes = await res.json();
@@ -39,7 +38,5 @@ export const authFunc = async (
     sameSite: "strict",
   });
 
-  console.log(data);
-
-  return data.token;
+  return data;
 };

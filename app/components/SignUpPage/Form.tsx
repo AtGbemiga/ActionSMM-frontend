@@ -47,7 +47,9 @@ export const Form = (): JSX.Element => {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     // string is an identifier, used to tell the Function what URL to use in the fetch.
-    await authFunc({ email, password }, "signup");
+    const res = await authFunc({ email, password }, "signup");
+    console.log(res.email);
+
     router.push("/plans");
   }
 

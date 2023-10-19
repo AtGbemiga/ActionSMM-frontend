@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavMenu from "./components/Global/Navbar/Navbar";
 import { Footer } from "./components/Global/Footer/Footer";
+import { Providers } from "./redux/provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,13 +21,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className}`}>
-        <header>
-          <NavMenu />
-        </header>
-        {children}
-        <footer className="mt-5">
-          <Footer />
-        </footer>
+        <Providers>
+          <header>
+            <NavMenu />
+          </header>
+          {children}
+          <footer className="mt-5">
+            <Footer />
+          </footer>
+        </Providers>
       </body>
     </html>
   );

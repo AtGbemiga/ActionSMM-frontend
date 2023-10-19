@@ -1,0 +1,17 @@
+.main {
+  background-color: red;
+  display: grid;
+  grid-template-columns: 0.25fr 1fr;
+}
+.main > nav {
+  background-color: blue;
+  display: grid;
+  grid-template-rows: 1fr;
+}
+.main > nav > section > link {
+  color: aliceblue;
+  background-color: aliceblue;
+}
+.main > section {
+  background-color: green;
+}
