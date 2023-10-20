@@ -62,6 +62,8 @@ export const Form = (): JSX.Element => {
     // console.log("tester", tester);
 
     // <
+    if (!email) return;
+    localStorage.setItem("email", email);
 
     router.push("/plans");
   }

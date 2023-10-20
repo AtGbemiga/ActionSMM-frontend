@@ -15,7 +15,6 @@ export const Footer = (): JSX.Element => {
           <li>
             <Link href="/login">Log in</Link>
           </li>
-          <li> test</li>
         </section>
         <section>
           <li>

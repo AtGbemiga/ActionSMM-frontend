@@ -7,16 +7,26 @@ import {
   setEmailTransport,
   emailRootState,
 } from "@/app/redux/features/emailTransport/emailSlice";
+import { Form } from "@/app/components/settings/Form";
 
 // interface SettingsProps {
 //   test: string;
 // }
 
 function Settings(): JSX.Element {
-  const email = useAppSelector(emailRootState);
+  // const email = useAppSelector(emailRootState);
   const dispatch = useAppDispatch();
+  const [email, setEmail] = useState("");
 
-  return <div>email: {email}</div>;
+  useEffect(() => {
+    setEmail(localStorage.getItem("email") ?? "");
+  }, []);
+
+  return (
+    <div>
+      <Form loginEmail={email ?? ""} />
+    </div>
+  );
 }
 
 export default Settings;

@@ -5,11 +5,9 @@ import styles from "./Navbar.module.css";
 export const PlansBtn = (): JSX.Element => {
   return (
     <>
-      <Button variant="none">
-        <Link href="/plans" className={styles.button}>
-          Plans
-        </Link>
-      </Button>
+      <Link href="/plans" className={styles.button}>
+        Plans
+      </Link>
     </>
   );
 };

@@ -9,7 +9,7 @@ export const Paystack = ({
   name: string | null;
   price: number | null;
 }): null => {
-  const [email, setEmail] = useState("example@example.com");
+  const [email, setEmail] = useState(localStorage.getItem("email"));
 
   useEffect(() => {
     async function handleSubmit() {
@@ -19,7 +19,9 @@ export const Paystack = ({
       const amount = multiplier?.toString();
       console.log("amountString", amount);
 
-      const res = await payStackFunc(email, amount as string);
+      if (!amount || !name || !email) return;
+
+      const res = await payStackFunc(email, amount, name);
       console.log("res", res);
       if (res) {
         window.location.href = res.data.authorization_url;

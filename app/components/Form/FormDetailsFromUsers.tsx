@@ -45,16 +45,20 @@ export const FormDetailsFromUsers = ({
         return "25,000";
       case "Supreme":
         return "30,000";
-      case "Starter Plus" || "Starter%20Plus":
+      case "Starter%20Plus":
         return "25,000";
-      case "Pro Plus" || "Pro%20Plus":
+      case "Pro%20Plus":
         return "30,000";
-      case "Supreme Plus" || "Supreme%20Plus":
+      case "Supreme%20Plus":
         return "34,500";
       default:
         return "";
     }
   }
+
+  const nameWithoutPercent = name.includes("%20")
+    ? name.replace("%20", " ")
+    : name;
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -184,7 +188,7 @@ export const FormDetailsFromUsers = ({
                 type="text"
                 id="planName"
                 className="form-control"
-                value={name}
+                value={nameWithoutPercent}
                 name="planName"
                 disabled
                 readOnly

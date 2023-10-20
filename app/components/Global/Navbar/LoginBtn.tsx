@@ -4,10 +4,10 @@ import styles from "./Navbar.module.css";
 
 export const LoginBtn = (): JSX.Element => {
   return (
-    <Button variant="none">
+    <>
       <Link href="/login" className={styles.button}>
         Login
       </Link>
-    </Button>
+    </>
   );
 };

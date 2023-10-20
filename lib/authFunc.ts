@@ -7,10 +7,18 @@ export const authFunc = async (
 ): Promise<AuthRes> => {
   let url;
 
-  // identifier is either login or signup
-  identifier === "login"
-    ? (url = "http://127.0.0.1:3000/api/v1/auth/login")
-    : (url = "http://127.0.0.1:3000/api/v1/auth/register");
+  // identifier is either login, signup or reset password
+  if (identifier === "login") {
+    url = "http://127.0.0.1:3000/api/v1/auth/login";
+  } else if (identifier === "signup") {
+    url = "http://127.0.0.1:3000/api/v1/auth/register";
+  } else if (identifier === "resetPassword") {
+    url = "http://127.0.0.1:3000/api/v1/auth/reset-password";
+  } else {
+    throw new Error("Invalid identifier");
+  }
+
+  console.log("email", email || undefined, "password", password);
 
   // attempt fetch
   const res = await fetch(url, {
@@ -19,11 +27,15 @@ export const authFunc = async (
     body: JSON.stringify({ email, password }),
   });
 
+  console.log("res", res);
+
   // check for if res fails
   if (!res.ok) {
     const exactErrorMsg = await res.json();
     throw new Error(
-      `Request failed with status ${res.status}, ${exactErrorMsg}`
+      `Request failed with status ${Object.entries(
+        res.status
+      )}, ${Object.entries(exactErrorMsg)}`
     );
   }
 
