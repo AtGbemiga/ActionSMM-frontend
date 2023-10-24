@@ -3,15 +3,16 @@
   display: grid;
   grid-template-columns: 0.25fr 1fr;
 }
+
 .main > nav {
-  background-color: blue;
+  background-color: #f0f2f5;
   display: grid;
   grid-template-rows: 1fr;
 }
-.main > nav > section > link {
-  color: aliceblue;
-  background-color: aliceblue;
-}
 .main > section {
   background-color: green;
+  display: flex;
+  justify-content: center;
+  border: 1px solid red;
+  width: 500px;
 }

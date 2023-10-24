@@ -16,3 +16,10 @@
 .icon:nth-child(3) {
   color: #0072b1;
 }
+.ig {
+  /* Instagram-like Linear Gradient */
+  background: linear-gradient(to bottom, #8a3ab9, #dd2a7b, #f58529);
+  color: #ffffff;
+  font-size: 7rem;
+  border-radius: 1rem;
+}

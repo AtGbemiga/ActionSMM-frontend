@@ -8,3 +8,22 @@
   padding: 3rem;
   text-align: center;
 }
+/* sm screen */
+@media screen and (max-width: 420px) {
+  .mappedCard {
+    grid-template-columns: 1fr;
+  }
+}
+/* md screen */
+@media screen and (max-width: 541px) {
+  .mappedCard {
+    display: flex;
+    flex-direction: column;
+  }
+}
+/* extras */
+@media screen and (max-width: 820px) {
+  .mappedCard {
+    grid-template-columns: 1fr 1fr;
+  }
+}

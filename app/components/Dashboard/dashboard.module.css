@@ -1,12 +1,32 @@
 .linkContainer {
-  border: 3px solid yellow;
-  display: grid;
+  /* border: 3px solid yellow; */
+  display: flex;
+  flex-direction: column;
+  padding-top: 5rem;
 }
 
 .linkContainer > a {
-  color: aliceblue;
-  margin: 0.3rem;
-  border: 1px solid red;
-  padding: 0.5rem;
+  color: #000000;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
   text-decoration: none;
+  max-height: 3rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.linkContainer > a:hover {
+  background-color: #cfd1d4; /*212157*/
+  color: #000000;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+  border-radius: 1rem;
+}
+
+.plan {
+  width: 100%;
+  border: 2px solid yellow;
 }

@@ -2,22 +2,26 @@
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./LoginPage.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { authFunc } from "@/lib/authFunc";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/app/redux/hook";
-// import { useSelector, useDispatch } from "react-redux";
-import { setEmailTransport } from "@/app/redux/features/emailTransport/emailSlice";
-import Settings from "@/app/dashboard/settings/page";
+import Cookies from "js-cookie";
 
 export const Form = (): JSX.Element => {
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const [error_msg, setError_msg] = useState("");
-  const [tester, setTester] = useState("");
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    setToken(Cookies.get("token") ?? "");
+
+    if (token) {
+      router.push("/plans");
+    }
+  }, [token, router]);
 
   function handleRegexCheck(e: React.ChangeEvent<HTMLInputElement>): void {
     const pattern =

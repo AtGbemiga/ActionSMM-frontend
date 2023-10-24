@@ -15,7 +15,7 @@ export const MappedCard = (): JSX.Element => {
       price: plan.price,
     };
 
-    return <Card key={plan.name} {...cardProps} />;
+    return <Card key={plan.name} {...cardProps} index={index} />;
   });
   return <>{mappedResult}</>;
 };

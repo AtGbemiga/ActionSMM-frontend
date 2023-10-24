@@ -1,19 +1,27 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { PlanForm } from "@/app/typesAndInterfaces/planForm";
 import { planFormFunc } from "@/lib/planForm";
 import Cookies from "js-cookie";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Styles from "./Form.module.css";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { websiteRegex } from "./asset/websiteRegex";
+
+// type for input error refs
+type InputRefs = {
+  [key: string]: React.MutableRefObject<HTMLInputElement | null>;
+};
 
 export const FormDetailsFromUsers = ({
   name,
 }: {
   name: string;
 }): JSX.Element => {
+  // state to render form on multiple steps
   const [step, setStep] = useState(1);
+  // state to store form data
   const [formData, setFormData] = useState<PlanForm>({
     planName: name,
     price: "",
@@ -24,7 +32,6 @@ export const FormDetailsFromUsers = ({
     cta: [],
     startDate: undefined,
     dueDate: undefined,
-    socialMediaPics: undefined,
     accounts: {
       one: "",
       two: "",
@@ -34,9 +41,41 @@ export const FormDetailsFromUsers = ({
   });
   const token = Cookies.get("token");
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  const inputRefs: InputRefs = {
+    personalName: useRef<HTMLInputElement | null>(null),
+    businessName: useRef<HTMLInputElement | null>(null),
+    cta: useRef<HTMLInputElement | null>(null),
+    startDate: useRef<HTMLInputElement | null>(null),
+    // aboutYourBusiness: useRef<HTMLTextAreaElement | null>(null),
+  };
+
+  // state for errors
+  const [errors, setErrors] = useState<Record<string, boolean>>({
+    personalName: false,
+    businessName: false,
+    website: false,
+    cta: false,
+    startDate: false,
+  });
+
+  // Function to save form data to local storage
+  const saveFormDataToLocalStorage = (data: PlanForm) => {
+    // Exclude the startDate property from the data object
+    const { startDate, ...formDataWithoutStartDate } = data;
+    localStorage.setItem("formData", JSON.stringify(formDataWithoutStartDate));
+  };
+
+  // Load form data from local storage
+  useEffect(() => {
+    const storedData = localStorage.getItem("formData");
+    if (storedData) {
+      setFormData(JSON.parse(storedData));
+    }
+  }, []);
+
+  // assign price to plan
   function handlePrice() {
     switch (name) {
       case "Starter":
@@ -56,6 +95,7 @@ export const FormDetailsFromUsers = ({
     }
   }
 
+  // remove %20 from name
   const nameWithoutPercent = name.includes("%20")
     ? name.replace("%20", " ")
     : name;
@@ -102,16 +142,16 @@ export const FormDetailsFromUsers = ({
         [name]: value,
       }));
     }
+
+    // Save form data to local storage whenever it changes
+    saveFormDataToLocalStorage(formData);
   };
 
-  const handleFileChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement & {
-      files: FileList;
-    };
-    const filesArray = Array.from(target.files);
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      socialMediaPics: target.files[0],
+  const handleBlur = (fieldName: string) => {
+    const inputValue = inputRefs[fieldName].current?.value;
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [fieldName]: !inputValue,
     }));
   };
 
@@ -139,10 +179,12 @@ export const FormDetailsFromUsers = ({
     formDataBody.append("accounts.two", formData.accounts.two ?? "");
     formDataBody.append("accounts.three", formData.accounts.three ?? "");
     formDataBody.append("accounts.four", formData.accounts.four ?? "");
-    formDataBody.append("socialMediaPics", formData.socialMediaPics ?? "");
     console.log(formData.accounts);
 
+    // submit form
     await planFormFunc(formDataBody);
+    // clear local storage
+    localStorage.removeItem("formData");
     console.log("submitted");
 
     // route to payments page after submission and pass name into the params
@@ -156,30 +198,12 @@ export const FormDetailsFromUsers = ({
   };
 
   // if the switch case === 1 and enter is pressed but not all the required inputs are filled out, pop up with not all the inputs are filled out notice but if user is on the last input and its has regex passing content, move to switch case 2
-  // useEffect(() => {
-  //   const handleKeyUp = (event: MyEvent) => {
-  //     if (event !== null && event.event instanceof KeyboardEvent ) {
-  //       if (event.event.key === "Enter" ) {
-  //         console.log(`Logging key: ${event.event.key} to the console`);
-  //       }
-  //     } else if(event !== null && event.event.target instanceof HTMLInputElement){
-  //       const { name} = event.event.target;
-  //     }
-
-  //   };
-
-  //   window.addEventListener("keyup", handleKeyUp);
-
-  //   return () => {
-  //     window.removeEventListener("keyup", handleKeyUp);
-  //   };
-  // }, [step]);
 
   const renderStep = () => {
     switch (step) {
       case 1:
         return (
-          <section>
+          <section className="border border-2 border-danger bg-light p-5 rounded">
             <div className="mb-3">
               <label htmlFor="planName" className="form-label">
                 Plan name
@@ -193,9 +217,6 @@ export const FormDetailsFromUsers = ({
                 disabled
                 readOnly
               />
-              <div id="planNameHelp" className="form-text">
-                plan name error here
-              </div>
             </div>
             <div className="mb-3">
               <label htmlFor="price" className="form-label">
@@ -210,13 +231,10 @@ export const FormDetailsFromUsers = ({
                 disabled
                 readOnly
               />
-              <div id="priceHelp" className="form-text">
-                price error here
-              </div>
             </div>
             <div className="mb-3">
               <label htmlFor="personalName" className="form-label">
-                Personal Name
+                Personal name
               </label>
               <input
                 type="text"
@@ -225,13 +243,17 @@ export const FormDetailsFromUsers = ({
                 aria-describedby="personalNameHelp"
                 value={formData.personalName}
                 onChange={handleInputChange}
+                onBlur={() => handleBlur("personalName")}
                 name="personalName"
                 required
                 aria-required
+                ref={inputRefs.personalName}
               />
-              <div id="personalNameHelp" className="form-text">
-                personal Name error here
-              </div>
+              {errors.personalName && (
+                <div id="personalNameHelp" className="form-text text-danger">
+                  This is a required field
+                </div>
+              )}
             </div>
             <div className="mb-3">
               <label htmlFor="businessName" className="form-label">
@@ -244,13 +266,17 @@ export const FormDetailsFromUsers = ({
                 aria-describedby="businessNameHelp"
                 value={formData.businessName}
                 onChange={handleInputChange}
+                onBlur={() => handleBlur("businessName")}
                 name="businessName"
                 required
                 aria-required
+                ref={inputRefs.businessName}
               />
-              <div id="businessNameHelp" className="form-text">
-                business Name error here
-              </div>
+              {errors.businessName && (
+                <div id="businessNameHelp" className="form-text text-danger">
+                  This is a required field
+                </div>
+              )}
             </div>
             <div className="mb-3">
               <label htmlFor="website" className="form-label">
@@ -264,10 +290,13 @@ export const FormDetailsFromUsers = ({
                 value={formData.website}
                 onChange={handleInputChange}
                 name="website"
+                onBlur={(e) => websiteRegex(e, setErrors)}
               />
-              <div id="websiteHelp" className="form-text">
-                website error here
-              </div>
+              {errors.website && (
+                <div id="websiteHelp" className="form-text text-danger">
+                  website error here
+                </div>
+              )}
             </div>
             <div className="mb-3">
               <label htmlFor="aboutYourBusiness" className="form-label">
@@ -283,8 +312,8 @@ export const FormDetailsFromUsers = ({
                 required
                 aria-required
               />
-              <div id="aboutYourBusinessHelp" className="form-text">
-                aboutYourBusiness error here
+              <div id="aboutYourBusinessHelp" className="form-text text-danger">
+                This is a required field
               </div>
             </div>
             <div className="mb-3">
@@ -299,22 +328,30 @@ export const FormDetailsFromUsers = ({
                 value={formData.cta}
                 onChange={handleInputChange}
                 name="cta"
+                required
+                aria-required
+                ref={inputRefs.cta}
+                onBlur={() => handleBlur("cta")}
               />
-              <div id="ctaHelp" className="form-text">
-                cta error here
-              </div>
+              {errors.cta && (
+                <div id="ctaHelp" className="form-text text-danger">
+                  This is a required field
+                </div>
+              )}
             </div>
-            <input
-              type="button"
-              onClick={() => setStep(2)}
-              className="btn btn-primary"
-              value="Next"
-            />
+            <div className="d-flex justify-content-end">
+              <input
+                type="button"
+                onClick={() => setStep(2)}
+                className="btn btn-primary text-center px-5"
+                value="Next"
+              />
+            </div>
           </section>
         );
       case 2:
         return (
-          <section>
+          <section className="border border-2 border-danger bg-light p-5 rounded">
             <div className="mb-3">
               <label htmlFor="startDate" className="form-label">
                 Start Date
@@ -331,6 +368,9 @@ export const FormDetailsFromUsers = ({
                 minDate={new Date(new Date().setDate(new Date().getDate() + 3))}
                 showIcon
                 className={Styles.datepicker}
+                name="startDate"
+                required
+                aria-required
               />
               <div id="startDateHelp" className="form-text">
                 Start Date error here
@@ -502,32 +542,25 @@ export const FormDetailsFromUsers = ({
               </>
             )}
 
-            {/* file upload here */}
-            <div className="mb-3">
-              <label htmlFor="socialMediaPics" className="form-label">
-                socialMediaPics
-              </label>
+            <div className=" d-flex justify-content-end gap-2">
               <input
-                type="file"
-                className="form-control"
-                id="socialMediaPics"
-                aria-describedby="socialMediaPicsHelp"
-                onChange={handleFileChange}
-                name="socialMediaPics"
+                type="button"
+                value="Back"
+                onClick={() => setStep(1)}
+                className="btn btn-outline-secondary"
               />
-              <div id="socialMediaPicsHelp" className="form-text">
-                socialMediaPics error here
-              </div>
+              <button type="submit" className="btn btn-primary px-5">
+                Next
+              </button>
             </div>
-
-            <input type="button" value="Back" onClick={() => setStep(1)} />
-            <button type="submit" className="btn btn-primary">
-              Next
-            </button>
           </section>
         );
     }
   };
 
-  return <form onSubmit={handleSubmit}>{renderStep()}</form>;
+  return (
+    <form onSubmit={handleSubmit} className="w-50">
+      {renderStep()}
+    </form>
+  );
 };

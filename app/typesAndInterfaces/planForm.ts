@@ -8,7 +8,6 @@ export interface PlanForm {
   cta: string[];
   startDate: Date | undefined;
   dueDate: Date | undefined;
-  socialMediaPics?: File | undefined;
   accounts: {
     one?: string;
     two?: string;

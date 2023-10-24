@@ -6,6 +6,7 @@ import {
   faLinkedin,
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AiOutlineInstagram } from "react-icons/ai";
 
 export const WeManage = (): JSX.Element => {
   return (
@@ -17,11 +18,7 @@ export const WeManage = (): JSX.Element => {
           className={`${styles.icon}`}
           title="Facebook"
         />
-        <FontAwesomeIcon
-          icon={faInstagramSquare}
-          className={`${styles.icon}`}
-          title="Instagram"
-        />
+        <AiOutlineInstagram className={`${styles.ig}`} title="Instagram" />
         <FontAwesomeIcon
           icon={faLinkedin}
           className={`${styles.icon}`}

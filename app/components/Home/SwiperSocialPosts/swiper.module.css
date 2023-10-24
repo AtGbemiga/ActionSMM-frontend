@@ -1,0 +1,27 @@
+.swiper {
+  height: 30rem;
+  width: 60vw;
+  min-height: 200px;
+}
+
+/* sm screen */
+@media screen and (max-width: 420px) {
+  .swiper {
+    height: 18rem;
+    width: 90vw;
+  }
+}
+/* md screen */
+@media screen and (max-width: 540px) {
+  .swiper {
+    height: 28rem;
+    width: 90vw;
+  }
+}
+/* extras */
+@media screen and (max-width: 280px) {
+  .swiper {
+    height: 20rem;
+    width: 90vw;
+  }
+}

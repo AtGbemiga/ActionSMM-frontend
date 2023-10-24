@@ -12,6 +12,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }): JSX.Element {
+  // tags are added for styling purpose only. Change these when better CSS skills are acquired
   return (
     <article className={styles.main}>
       <nav>

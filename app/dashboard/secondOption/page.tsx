@@ -1,5 +1,5 @@
-const Page = () => {
-  return <div>second option here</div>;
+const Page = (): JSX.Element => {
+  return <main>second option here</main>;
 };
 
 export default Page;

@@ -13,9 +13,108 @@
   display: flex;
   padding-top: 2rem;
   padding-bottom: 2rem;
+  padding-left: 8rem;
+  padding-right: 8rem;
 }
+.swiper_heading_container {
+  padding-left: 16rem;
+  padding-right: 16rem;
+  text-align: center;
+  margin-top: 3rem;
+}
+.post_showcase_container {
+  margin-bottom: 3rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+/* .how_it_works_container {
+} */
 .stats {
   width: 100%;
   height: fit-content;
   margin-top: 3rem;
+  padding-left: 13rem;
+  padding-right: 13rem;
+}
+
+/* sm screen */
+@media screen and (max-width: 420px) {
+  .we_manage_container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .starter_plan_ad_container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .swiper_heading_container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .how_it_works_container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+/* md screen */
+@media screen and (max-width: 540px) {
+  .we_manage_container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .starter_plan_ad_container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .swiper_heading_container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+/* extras */
+@media screen and (max-width: 820px) {
+  .swiper_heading_container {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+  .how_it_works_container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .stats {
+    width: 100%;
+    height: fit-content;
+    margin-top: 3rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+@media screen and (max-width: 912px) {
+  .swiper_heading_container {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+  .how_it_works_container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .stats {
+    width: 100%;
+    height: fit-content;
+    margin-top: 3rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+@media screen and (max-width: 412px) {
+  .swiper_heading_container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+@media screen and (max-width: 280px) {
+  .swiper_heading_container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }

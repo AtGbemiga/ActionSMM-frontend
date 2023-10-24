@@ -1,13 +1,17 @@
 .card {
   width: 18rem;
-  background-color: #ff0000;
+  background-color: #f0f2f5;
   border: none;
 }
 .ul {
-  background-color: #ff0000;
+  background-color: #f0f2f5;
   border: "none";
 }
 .ul > li {
-  background-color: #ff0000;
+  background-color: #f0f2f5;
   border: none;
+}
+.star {
+  font-size: 1.2rem;
+  color: #969696;
 }

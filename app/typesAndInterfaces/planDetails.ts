@@ -7,4 +7,5 @@ export interface PlanDetails {
   customerSupport: string;
   performance: string;
   price: string;
+  index?: number;
 }

@@ -26,7 +26,7 @@ export default function RootLayout({
             <NavMenu />
           </header>
           {children}
-          <footer className="mt-5">
+          <footer>
             <Footer />
           </footer>
         </Providers>

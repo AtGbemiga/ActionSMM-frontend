@@ -2,9 +2,10 @@
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./SignUpPage.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { authFunc } from "@/lib/authFunc";
+import Cookies from "js-cookie";
 
 export const Form = (): JSX.Element => {
   const [email, setEmail] = useState<string | undefined>(undefined);
@@ -12,6 +13,15 @@ export const Form = (): JSX.Element => {
   const [error, setError] = useState(false);
   const [error_msg, setError_msg] = useState("");
   const router = useRouter();
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    setToken(Cookies.get("token") ?? "");
+
+    if (token) {
+      router.push("/plans");
+    }
+  }, [token, router]);
 
   function handleRegexCheck(e: React.ChangeEvent<HTMLInputElement>): void {
     const pattern =

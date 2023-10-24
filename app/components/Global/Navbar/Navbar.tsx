@@ -15,11 +15,22 @@ import { DashboardBtn } from "./DashboardBtn";
 import { useEffect, useState } from "react";
 import { NavIcon } from "./NavIcon";
 
-function NavMenu(): JSX.Element {
+function NavMenu(): JSX.Element | null {
   const [token, setToken] = useState("");
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
+    // const token = Cookies.get("token");
     setToken(Cookies.get("token") ?? "");
-  }, [token]);
+    // Enable the Navbar component only on the client-side
+    setMounted(true);
+    console.log("Navbar is mounted");
+  }, []);
+
+  if (!mounted) {
+    console.log("Navbar is not mounted");
+    return null;
+  }
 
   if (token) {
     return (
@@ -41,27 +52,24 @@ function NavMenu(): JSX.Element {
             >
               <Offcanvas.Header closeButton>
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-md`}>
-                  <Image
-                    src={Logo}
-                    alt="Logo"
-                    width={50}
-                    height={50}
-                    priority
-                  />{" "}
-                  ActionSMM
+                  <NavIcon />
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className={`${styles.nav_section_container}`}>
-                  <div>
-                    <HomeBtn />
-                  </div>
-                  <div>
-                    <PlansBtn />
-                  </div>
-                  <div>
-                    <DashboardBtn />
-                  </div>
+                  <section>
+                    <div>
+                      <HomeBtn />
+                    </div>
+                    <div>
+                      <PlansBtn />
+                    </div>
+                  </section>
+                  <section>
+                    <div>
+                      <DashboardBtn />
+                    </div>
+                  </section>
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>
@@ -74,9 +82,8 @@ function NavMenu(): JSX.Element {
     <>
       <Navbar key="md" expand="md" className={`${styles.navbar}`}>
         <Container fluid>
-          <Navbar.Brand href="/">
-            <Image src={Logo} alt="Logo" width={50} height={50} priority />{" "}
-            <span className="text-white">ActionSMM</span>
+          <Navbar.Brand>
+            <NavIcon />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-md`} />
           <Navbar.Offcanvas
@@ -90,24 +97,27 @@ function NavMenu(): JSX.Element {
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title id={`offcanvasNavbarLabel-expand-md`}>
-                <Image src={Logo} alt="Logo" width={50} height={50} priority />{" "}
-                ActionSMM
+                <NavIcon />
               </Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Body>
+            <Offcanvas.Body className={styles.off_canvas_body}>
               <Nav className={`${styles.nav_section_container}`}>
-                <div>
-                  <HomeBtn />
-                </div>
-                <div>
-                  <PlansBtn />
-                </div>
-                <div>
-                  <LoginBtn />
-                </div>
-                <div>
-                  <SignUpBtn />
-                </div>
+                <section>
+                  <div>
+                    <HomeBtn />
+                  </div>
+                  <div>
+                    <PlansBtn />
+                  </div>
+                </section>
+                <section>
+                  <div>
+                    <LoginBtn />
+                  </div>
+                  <div>
+                    <SignUpBtn />
+                  </div>
+                </section>
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>

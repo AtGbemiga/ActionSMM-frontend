@@ -3,7 +3,22 @@ import AdImg from "../../../../public/testLogo.jpg";
 import Image from "next/image";
 import styles from "./StarterPlanAd.module.css";
 import Button from "react-bootstrap/Button";
+import { payStackFunc } from "@/lib/payStack";
+import { useEffect, useState } from "react";
 export const StarterPlanAd = () => {
+  const [email, setEmail] = useState("");
+  // get email from local storage
+  useEffect(() => {
+    setEmail(localStorage.getItem("email") ?? "");
+  }, [email]);
+  async function handleClick() {
+    const res = await payStackFunc(email, "20000", "Starter");
+
+    // redirect to paystack checkout
+    if (res) {
+      window.location.href = res.data.authorization_url;
+    }
+  }
   return (
     <>
       <div className={styles.ad_img}>
@@ -17,7 +32,9 @@ export const StarterPlanAd = () => {
           architecto distinctio. Provident, mollitia fugit.
         </p>
         <div className="text-end ">
-          <Button className="btn-lg">Start</Button>
+          <Button className="btn-lg" onClick={handleClick}>
+            Start
+          </Button>
         </div>
       </div>
     </>
