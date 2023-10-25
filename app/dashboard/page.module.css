@@ -1,18 +1,31 @@
-.main {
-  background-color: red;
+.layout {
   display: grid;
   grid-template-columns: 0.25fr 1fr;
 }
 
-.main > nav {
+.layout > nav {
   background-color: #f0f2f5;
   display: grid;
   grid-template-rows: 1fr;
 }
-.main > section {
-  background-color: green;
+.layout > section {
+  background-color: #ffffff;
   display: flex;
   justify-content: center;
-  border: 1px solid red;
-  width: 500px;
+  width: 100%;
+}
+
+.main {
+  width: 70vw;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* sm screen */
+@media screen and (max-width: 420px) {
+  .main {
+    width: 100vw;
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+  }
 }

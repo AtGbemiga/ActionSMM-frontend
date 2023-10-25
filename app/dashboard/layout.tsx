@@ -1,5 +1,8 @@
 import styles from "./page.module.css";
-import { NavMenu } from "../components/Dashboard/NavSection/menu";
+import {
+  NavMenu,
+  NavMenuMobile,
+} from "../components/Dashboard/NavSection/menu";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -14,9 +17,10 @@ export default function DashboardLayout({
 }): JSX.Element {
   // tags are added for styling purpose only. Change these when better CSS skills are acquired
   return (
-    <article className={styles.main}>
+    <article className={styles.layout}>
       <nav>
         <NavMenu />
+        <NavMenuMobile />
       </nav>
       <section>{children}</section>
     </article>

@@ -5,6 +5,7 @@ import { PlanDashboard } from "@/app/typesAndInterfaces/planDashboard";
 import { PlanCard } from "./PlanCard";
 import Link from "next/link";
 import styles from "../dashboard.module.css";
+import Loading from "@/app/loading";
 
 export const Mapped = () => {
   const [plans, setPlans] = useState<PlanDashboard | undefined>(undefined);
@@ -21,7 +22,9 @@ export const Mapped = () => {
     };
     test();
   }, []);
-  if (plans?.plan.length === 0)
+  if (!plans) {
+    return <Loading />;
+  } else if (plans?.plan.length === 0) {
     return (
       <section className={`text-center pt-5 ${styles.noPlan}`}>
         <h4>No plan yet</h4>
@@ -30,13 +33,14 @@ export const Mapped = () => {
         </Link>
       </section>
     );
-  return (
-    <section className={`text-white ${styles.plan}`}>
-      <div style={{ width: "100%", border: "2px solid red" }}>
-        {plans?.plan.map((plan) => (
-          <PlanCard key={plan._id} {...plan} />
-        ))}{" "}
-      </div>
-    </section>
-  );
+  } else
+    return (
+      <section className={`${styles.plan}`}>
+        <div className="p-4">
+          {plans?.plan.map((plan) => (
+            <PlanCard key={plan._id} {...plan} />
+          ))}{" "}
+        </div>
+      </section>
+    );
 };

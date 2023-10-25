@@ -1,12 +1,13 @@
 "use client";
 import { SinglePlan } from "@/app/typesAndInterfaces/planDashboard";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Collapse from "react-bootstrap/Collapse";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import style from "../dashboard.module.css";
 
 export const PlanCard = ({
   planName,
@@ -35,15 +36,15 @@ export const PlanCard = ({
   );
 
   return (
-    <article>
+    <article className="my-4">
       <div className="card">
-        <div className="card-header">
+        <div className={`card-header ${style.cardHeader}`}>
           <h5>{planName}</h5>
         </div>
         <div className="card-body">
           <h6 className="card-title">
             Status: {status}{" "}
-            <Link title="Custom message ya all" id="t-1">
+            <Link title="This usually takes less than 24 hours." id="t-1">
               {/* <FontAwesomeIcon icon="fa-solid fa-circle-info" /> */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -59,9 +60,8 @@ export const PlanCard = ({
           </h6>
           <p className="card-text">
             Start date:{" "}
-            {startDate ? new Date(startDate).toLocaleDateString() : "N/A"}{" "}
-            {"           "}
-            Due date: {dueDate ? new Date(dueDate).toLocaleDateString() : "N/A"}
+            {startDate ? new Date(startDate).toLocaleDateString() : "N/A"} Due
+            date: {dueDate ? new Date(dueDate).toLocaleDateString() : "N/A"}
           </p>
         </div>
         <>
@@ -76,15 +76,17 @@ export const PlanCard = ({
                   icon={faCaretUp}
                   className="mt-1 text-primary"
                 />
-                <p className="ps-1 text-primary">See less</p>
+                <p className={`ps-1 text-primary pe-3 ${style.see}`}>
+                  See less
+                </p>
               </div>
             ) : (
               <div className="d-flex justify-content-end">
                 <FontAwesomeIcon
                   icon={faCaretDown}
-                  className="mt-1 text-primary"
+                  className="mt-1 pe-1 text-primary"
                 />
-                <p className="ps-1 text-primary">See more</p>
+                <p className={`text-primary pe-3 ${style.see}`}>See more</p>
               </div>
             )}
           </a>
