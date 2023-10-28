@@ -8,12 +8,20 @@
   height: 13rem;
   width: 13rem;
   border-radius: 1rem;
-  background-color: #000000;
+  background-color: #393d3f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .item_container:nth-child(2) > div:nth-child(3) {
-  background-color: blue;
   cursor: pointer;
+  background-color: #008dd5;
+  color: #ffffff;
+}
+
+.item_container div p {
+  font-weight: 600;
 }
 
 /* sm screen */

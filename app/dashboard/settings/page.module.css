@@ -1,0 +1,17 @@
+.main {
+  width: 70vw;
+}
+.formParent {
+  display: flex;
+  align-items: center;
+  height: 50%;
+}
+
+/* sm screen */
+@media screen and (max-width: 420px) {
+  .main {
+    width: 100vw;
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+  }
+}

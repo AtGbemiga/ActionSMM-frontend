@@ -33,7 +33,7 @@ export const Form = ({ loginEmail }: { loginEmail: string }): JSX.Element => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="w-100 p-5">
         <div>
           <div className={`mb-3 ${styles.hidden}`}>
             <label htmlFor="email" className="form-label">
@@ -55,7 +55,7 @@ export const Form = ({ loginEmail }: { loginEmail: string }): JSX.Element => {
             </div>
           </div>
           <label htmlFor="password" className="form-label">
-            Password
+            New Password
           </label>
           <div className="input-group d-flex align-items-center">
             <span className="input-group-text" id="basic-addon3">
@@ -91,7 +91,7 @@ export const Form = ({ loginEmail }: { loginEmail: string }): JSX.Element => {
         </div>
         <div className="mb-3">
           <label htmlFor="retypePassword" className="form-label">
-            Password
+            Confirm Password
           </label>
           <div className="input-group d-flex align-items-center">
             <span className="input-group-text" id="basic-addon3">

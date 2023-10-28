@@ -23,3 +23,12 @@
   font-size: 7rem;
   border-radius: 1rem;
 }
+
+/* sm screen */
+@media screen and (max-width: 420px) {
+  .ig {
+    height: 4rem;
+    width: 7rem;
+    border-radius: 0.5rem;
+  }
+}

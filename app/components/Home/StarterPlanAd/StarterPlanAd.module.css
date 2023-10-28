@@ -1,6 +1,13 @@
+.adIcon {
+  border: 0.5rem solid #212529;
+  border-radius: 1rem;
+  width: 12rem;
+  height: 12rem;
+}
+
 /* sm screen */
 @media screen and (max-width: 420px) {
-  .ad_img {
+  .ad_img_container {
     display: none;
   }
 }

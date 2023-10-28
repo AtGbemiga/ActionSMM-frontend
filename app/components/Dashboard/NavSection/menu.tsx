@@ -58,7 +58,7 @@ export const NavMenuMobile = (): JSX.Element => {
             <BsPersonSquare className={styles.icon} /> Profile
           </Link>
 
-          <Link href="/dashboard/secondOption">
+          <Link href="/dashboard/draft">
             {" "}
             <AiOutlineFile className={styles.icon} /> Draft
           </Link>

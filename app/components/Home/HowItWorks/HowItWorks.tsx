@@ -1,19 +1,20 @@
 import styles from "./HowItWorks.module.css";
 import Image from "next/image";
 import Img from "../../../../public/testLogo.jpg";
+import {
+  PiNumberSquareOneBold,
+  PiNumberSquareTwoBold,
+  PiNumberSquareThreeBold,
+} from "react-icons/pi";
 export const HowItWorks = () => {
   return (
     <>
       <section className={`${styles.section}`}>
-        <Image src={Img} alt="Img" width={200} height={200} />
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat
-          aspernatur nisi ea accusantium blanditiis corrupti, voluptates ipsam
-          quos.
-        </p>
+        <PiNumberSquareOneBold />
+        <p>Fill the form</p>
       </section>
       <section className={`${styles.section_reverse}`}>
-        <Image src={Img} alt="Img" width={200} height={200} />
+        <PiNumberSquareTwoBold />
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat
           aspernatur nisi ea accusantium blanditiis corrupti, voluptates ipsam
@@ -21,7 +22,7 @@ export const HowItWorks = () => {
         </p>
       </section>
       <section className={`${styles.last_section}`}>
-        <Image src={Img} alt="Img" width={200} height={200} />
+        <PiNumberSquareThreeBold />
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat
           aspernatur nisi ea accusantium blanditiis corrupti, voluptates ipsam

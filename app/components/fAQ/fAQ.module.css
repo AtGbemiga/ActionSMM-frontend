@@ -1,0 +1,18 @@
+.faqItem {
+  margin: 0.5rem;
+}
+.faqTitle,
+.faqContent {
+  padding: 1rem;
+  background-color: #ffffff;
+  border: 1px solid #ffffff;
+}
+.faqTitle {
+  min-height: 5rem;
+}
+.faqContent {
+  margin-top: 0.025rem;
+}
+.faqItem:hover {
+  cursor: pointer;
+}
