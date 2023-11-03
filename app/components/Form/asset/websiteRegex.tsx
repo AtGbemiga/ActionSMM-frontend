@@ -7,7 +7,11 @@ export const websiteRegex = (
   e: Props["e"],
   setErrors: Props["setErrors"]
 ): void | boolean => {
-  if (e.target.value === "") return;
+  if (e.target.value === "")
+    return setErrors((prevErrors) => ({
+      ...prevErrors,
+      website: false,
+    }));
   const pattern =
     /^([https?]{4,5}):\/\/(www)?\.?(.+)\.([a-z]{2,5})(\.[a-z]+)?$/i;
 

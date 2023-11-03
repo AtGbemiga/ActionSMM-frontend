@@ -15,7 +15,7 @@ export const NavMenu = (): JSX.Element => {
         <GoHome className={styles.icon} /> Home
       </Link>
 
-      <Link href="/dashboard/profile">
+      {/* <Link href="/dashboard/profile">
         {" "}
         <BsPersonSquare className={styles.icon} /> Profile
       </Link>
@@ -23,7 +23,7 @@ export const NavMenu = (): JSX.Element => {
       <Link href="/dashboard/secondOption">
         {" "}
         <AiOutlineFile className={styles.icon} /> Draft
-      </Link>
+      </Link> */}
 
       <Link href="/dashboard/settings">
         <AiOutlineSetting className={styles.icon} /> Settings

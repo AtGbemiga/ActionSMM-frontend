@@ -11,9 +11,11 @@ export const authFunc = async (
   if (identifier === "login") {
     url = "http://127.0.0.1:3000/api/v1/auth/login";
   } else if (identifier === "signup") {
-    url = "http://127.0.0.1:3000/api/v1/auth/register";
+    url =
+      "https://actionsmm-backend-production.up.railway.app/api/v1/auth/register";
   } else if (identifier === "resetPassword") {
-    url = "http://127.0.0.1:3000/api/v1/auth/reset-password";
+    url =
+      "https://actionsmm-backend-production.up.railway.app/api/v1/auth/reset-password";
   } else {
     throw new Error("Invalid identifier");
   }
@@ -23,7 +25,11 @@ export const authFunc = async (
   // attempt fetch
   const res = await fetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+
     body: JSON.stringify({ email, password }),
   });
 

@@ -11,9 +11,9 @@ export default function SignUp() {
         <section>
           <Logo />
         </section>
-        <section>
+        {/* <section>
           <GoogleBtn />
-        </section>
+        </section> */}
         <section className={styles.form}>
           <Form />
         </section>

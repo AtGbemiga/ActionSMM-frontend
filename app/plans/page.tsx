@@ -15,9 +15,9 @@ export default function Plans(): JSX.Element {
       <section className={`${styles.mappedCard} my-5`}>
         <MappedCard />
       </section>
-      <section className={`${styles.enterpriseAd}`}>
+      {/* <section className={`${styles.enterpriseAd}`}>
         <EnterpriseAd />
-      </section>
+      </section> */}
     </main>
   );
 }

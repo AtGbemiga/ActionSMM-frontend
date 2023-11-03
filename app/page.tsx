@@ -10,8 +10,13 @@ import styles from "./page.module.css";
 export default function Home(): JSX.Element {
   return (
     <main className={`${styles.main}`}>
-      <section className="w-100">
+      <section className="position-relative">
         <HeroImg />
+        <h3 className={`position-absolute ${styles.heroHeading}`}>
+          <span className={styles.heroSpan}>Powerful</span> and{" "}
+          <span className={styles.heroSpan}>affordable</span> social media
+          management
+        </h3>
       </section>
       <section className={styles.we_manage_container}>
         <WeManage />

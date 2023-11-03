@@ -1,3 +1,51 @@
-/* .datepicker {
-  color: rgb(255, 0, 0) !important;
-} */
+.form {
+  width: 50vw;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08);
+  /* border: 1px solid red; */
+}
+
+/* sm screens */
+@media screen and (max-width: 420px) {
+  .form {
+    width: 100vw;
+    box-shadow: none;
+  }
+}
+/* extras */
+@media screen and (max-width: 820px) {
+  .form {
+    width: 70vw;
+  }
+  .step1 {
+    height: 100%;
+  }
+}
+@media screen and (max-width: 912px) {
+  .form {
+    width: 70vw;
+  }
+  .step1 {
+    height: 100%;
+  }
+}
+@media screen and (max-width: 280px) {
+  .form {
+    width: 100vw;
+  }
+  .step1 {
+    height: 100%;
+  }
+}
+@media screen and (max-width: 412px) {
+  .form {
+    width: 100vw;
+  }
+  .step1 {
+    height: 100%;
+  }
+}
+@media screen and (max-width: 414px) {
+  .form {
+    width: 100vw;
+  }
+}

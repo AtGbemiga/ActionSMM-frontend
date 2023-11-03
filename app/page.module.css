@@ -6,6 +6,18 @@
   background-color: ffffff;
   padding-bottom: 6rem;
 }
+.heroHeading {
+  bottom: 10%;
+  color: #ffffff;
+  left: 2rem;
+  width: 30%;
+  font-family: "Agrandir Grand";
+  font-size: 4rem;
+}
+.heroSpan {
+  font-family: "Agrandir Grand";
+  color: #c1ff72;
+}
 .we_manage_container {
   width: 100%;
   margin-top: 3rem;

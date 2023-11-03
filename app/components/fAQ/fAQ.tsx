@@ -63,12 +63,13 @@ const FAQ: React.FC = () => {
     {
       title: "What is ActionSMM?",
       content:
-        "ActionSMM is a social media service that offers a variety of plans. You can get performance stats alongside other plan features without a single commercial – all for one low monthly price. \n\n There's always something new to implement!",
+        "ActionSMM is a social media service that offers a variety of plans. You can get performance stats alongside other plan features – all for one low monthly price. \n\n There's always something new to implement!",
       isOpen: false,
     },
     {
-      title: "What do I benefit?(doubted question)",
-      content: "Content for Item 4",
+      title: "What can I do on ActionSMM",
+      content:
+        "ActionSMM has an extensive performance stats feature giving you greater insights all in one place. In addition, the plans chat lets you send vital updates such as new watermarks and more. Use these features and more as much as you want, anytime you want.",
       isOpen: false,
     },
     {

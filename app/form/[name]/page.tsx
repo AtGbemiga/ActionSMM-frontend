@@ -8,7 +8,7 @@ interface PageProps {
 
 export default function Page({ params: { name } }: PageProps): JSX.Element {
   return (
-    <main className="bg-danger d-flex justify-content-center border border-2 border-success">
+    <main className="d-flex justify-content-center">
       <FormDetailsFromUsers name={name} />
     </main>
   );

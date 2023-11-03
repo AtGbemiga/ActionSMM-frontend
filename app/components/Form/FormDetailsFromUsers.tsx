@@ -1,18 +1,19 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { PlanForm } from "@/app/typesAndInterfaces/planForm";
+import { PlanForm, InputRefs } from "@/app/typesAndInterfaces/planForm";
 import { planFormFunc } from "@/lib/planForm";
 import Cookies from "js-cookie";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Styles from "./Form.module.css";
-import { useRouter, useSearchParams } from "next/navigation";
 import { websiteRegex } from "./asset/websiteRegex";
-
-// type for input error refs
-type InputRefs = {
-  [key: string]: React.MutableRefObject<HTMLInputElement | null>;
-};
+import { payStackFunc } from "@/lib/payStack";
+import handleTextAreaBlur from "./asset/textAreaBlur";
+import handleDateBlur from "./asset/dateBlur";
+import { accountsRegex } from "./asset/accountsBlur";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+import { ToolTipIcon } from "../Global/assets/toolTipIcon";
 
 export const FormDetailsFromUsers = ({
   name,
@@ -21,6 +22,8 @@ export const FormDetailsFromUsers = ({
 }): JSX.Element => {
   // state to render form on multiple steps
   const [step, setStep] = useState(1);
+  // state to hold email from local storage
+  const [email, setEmail] = useState("");
   // state to store form data
   const [formData, setFormData] = useState<PlanForm>({
     planName: name,
@@ -39,16 +42,15 @@ export const FormDetailsFromUsers = ({
       four: "",
     },
   });
+  // token from backend
   const token = Cookies.get("token");
-  const router = useRouter();
-  const searchParams = useSearchParams();
 
+  // refs for only the text inputs it contains
   const inputRefs: InputRefs = {
     personalName: useRef<HTMLInputElement | null>(null),
     businessName: useRef<HTMLInputElement | null>(null),
     cta: useRef<HTMLInputElement | null>(null),
     startDate: useRef<HTMLInputElement | null>(null),
-    // aboutYourBusiness: useRef<HTMLTextAreaElement | null>(null),
   };
 
   // state for errors
@@ -58,7 +60,27 @@ export const FormDetailsFromUsers = ({
     website: false,
     cta: false,
     startDate: false,
+    aboutYourBusiness: false,
+    accountsOne: false,
+    accountsTwo: false,
+    accountsThree: false,
+    accountsFour: false,
   });
+
+  // tool tip for errors
+  const Link = ({
+    id,
+    children,
+    title,
+  }: {
+    id: string;
+    children: React.ReactNode;
+    title: string;
+  }) => (
+    <OverlayTrigger overlay={<Tooltip id={id}>{title}</Tooltip>}>
+      <a href="#">{children}</a>
+    </OverlayTrigger>
+  );
 
   // Function to save form data to local storage
   const saveFormDataToLocalStorage = (data: PlanForm) => {
@@ -66,6 +88,11 @@ export const FormDetailsFromUsers = ({
     const { startDate, ...formDataWithoutStartDate } = data;
     localStorage.setItem("formData", JSON.stringify(formDataWithoutStartDate));
   };
+
+  // load email from local storage
+  useEffect(() => {
+    setEmail(localStorage.getItem("email") ?? "");
+  }, [email]);
 
   // Load form data from local storage
   useEffect(() => {
@@ -103,7 +130,7 @@ export const FormDetailsFromUsers = ({
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value, required } = e.target;
+    const { name, value } = e.target;
     if (name === "accountsOne") {
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -183,18 +210,19 @@ export const FormDetailsFromUsers = ({
 
     // submit form
     await planFormFunc(formDataBody);
-    // clear local storage
-    localStorage.removeItem("formData");
+    // // clear local storage
+    // localStorage.removeItem("formData");
     console.log("submitted");
 
-    // route to payments page after submission and pass name into the params
-
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("name", formData.planName);
-    params.set("price", formData.price || handlePrice());
-    console.log(params);
-
-    router.push(`/payment?${params}`);
+    console.log("starting payment checkout");
+    const res = await payStackFunc(
+      email,
+      formData.price ?? "",
+      formData.planName
+    );
+    if (res) {
+      window.location.href = res.data.authorization_url;
+    }
   };
 
   // if the switch case === 1 and enter is pressed but not all the required inputs are filled out, pop up with not all the inputs are filled out notice but if user is on the last input and its has regex passing content, move to switch case 2
@@ -203,10 +231,10 @@ export const FormDetailsFromUsers = ({
     switch (step) {
       case 1:
         return (
-          <section className="border border-2 border-danger bg-light p-5 rounded">
+          <section className={`bg-light p-5 rounded ${Styles.step1}`}>
             <div className="mb-3">
               <label htmlFor="planName" className="form-label">
-                Plan name
+                Plan Name
               </label>
               <input
                 type="text"
@@ -234,7 +262,7 @@ export const FormDetailsFromUsers = ({
             </div>
             <div className="mb-3">
               <label htmlFor="personalName" className="form-label">
-                Personal name
+                Personal Name
               </label>
               <input
                 type="text"
@@ -294,13 +322,23 @@ export const FormDetailsFromUsers = ({
               />
               {errors.website && (
                 <div id="websiteHelp" className="form-text text-danger">
-                  website error here
+                  Enter a valid website URL.{" "}
+                  <Link
+                    title="Open the website in your browser. Copy the URL from the address bar and paste it here."
+                    id="t-1"
+                  >
+                    <ToolTipIcon
+                      width="16"
+                      height="16"
+                      className="bi bi-info-circle-fill text-dark"
+                    />
+                  </Link>{" "}
                 </div>
               )}
             </div>
             <div className="mb-3">
               <label htmlFor="aboutYourBusiness" className="form-label">
-                aboutYourBusiness
+                About Your Business
               </label>
               <textarea
                 className="form-control"
@@ -308,17 +346,23 @@ export const FormDetailsFromUsers = ({
                 aria-describedby="aboutYourBusinessHelp"
                 value={formData.aboutYourBusiness}
                 onChange={handleInputChange}
+                onBlur={(e) => handleTextAreaBlur(e, setErrors)}
                 name="aboutYourBusiness"
                 required
                 aria-required
               />
-              <div id="aboutYourBusinessHelp" className="form-text text-danger">
-                This is a required field
-              </div>
+              {errors.aboutYourBusiness && (
+                <div
+                  id="aboutYourBusinessHelp"
+                  className="form-text text-danger"
+                >
+                  This is a required field
+                </div>
+              )}
             </div>
             <div className="mb-3">
               <label htmlFor="cta" className="form-label">
-                cta
+                Call To Action
               </label>
               <input
                 type="text"
@@ -351,7 +395,7 @@ export const FormDetailsFromUsers = ({
         );
       case 2:
         return (
-          <section className="border border-2 border-danger bg-light p-5 rounded">
+          <section className={`bg-light p-5 rounded h-100 ${Styles.step2}`}>
             <div className="mb-3">
               <label htmlFor="startDate" className="form-label">
                 Start Date
@@ -367,20 +411,26 @@ export const FormDetailsFromUsers = ({
                 // make the min date 3 days from now
                 minDate={new Date(new Date().setDate(new Date().getDate() + 3))}
                 showIcon
-                className={Styles.datepicker}
+                className={`${Styles.datepicker}`}
                 name="startDate"
                 required
                 aria-required
+                onBlur={(e) => handleDateBlur(e, setErrors)}
               />
-              <div id="startDateHelp" className="form-text">
-                Start Date error here
-              </div>
+              {errors.startDate && (
+                <div
+                  id="startDateHelp"
+                  className="form-text text-danger text-danger"
+                >
+                  Select a valid date.
+                </div>
+              )}
             </div>
             {(name === "Starter" || name === "Starter%20Plus") && (
               <>
                 <div className="mb-3">
                   <label htmlFor="accounts" className="form-label">
-                    accounts
+                    Account
                   </label>
                   <input
                     type="text"
@@ -389,15 +439,20 @@ export const FormDetailsFromUsers = ({
                     aria-describedby="accountsHelp"
                     onChange={handleInputChange}
                     value={formData.accounts.one}
+                    onBlur={(e) => accountsRegex(e, setErrors, "accountsOne")}
                     name="accountsOne"
                   />
-                  <div id="accountsHelp" className="form-text">
-                    accounts error here
-                  </div>
+                  {errors.accountsOne && (
+                    <div id="accountsHelp" className="form-text text-danger">
+                      For Facebook, LinkedIn & X, open the account in your
+                      browser. Copy the URL from the address bar and paste it
+                      here. For Instagram, enter the account handle.
+                    </div>
+                  )}
                 </div>
                 <div className="mb-3">
                   <label htmlFor="accounts" className="form-label">
-                    accounts
+                    Account
                   </label>
                   <input
                     type="text"
@@ -407,10 +462,15 @@ export const FormDetailsFromUsers = ({
                     onChange={handleInputChange}
                     value={formData.accounts.two}
                     name="accountsTwo"
+                    onBlur={(e) => accountsRegex(e, setErrors, "accountsTwo")}
                   />
-                  <div id="accountsHelp" className="form-text">
-                    accounts error here
-                  </div>
+                  {errors.accountsTwo && (
+                    <div id="accountsHelp" className="form-text text-danger">
+                      For Facebook, LinkedIn & X, open the account in your
+                      browser. Copy the URL from the address bar and paste it
+                      here. For Instagram, enter the account handle.
+                    </div>
+                  )}
                 </div>
               </>
             )}
@@ -418,7 +478,7 @@ export const FormDetailsFromUsers = ({
               <>
                 <div className="mb-3">
                   <label htmlFor="accounts" className="form-label">
-                    accounts
+                    Account
                   </label>
                   <input
                     type="text"
@@ -428,14 +488,19 @@ export const FormDetailsFromUsers = ({
                     onChange={handleInputChange}
                     value={formData.accounts.one}
                     name="accountsOne"
+                    onBlur={(e) => accountsRegex(e, setErrors, "accountsOne")}
                   />
-                  <div id="accountsHelp" className="form-text">
-                    accounts error here
-                  </div>
+                  {errors.accountsOne && (
+                    <div id="accountsHelp" className="form-text text-danger">
+                      For Facebook, LinkedIn & X, open the account in your
+                      browser. Copy the URL from the address bar and paste it
+                      here. For Instagram, enter the account handle.
+                    </div>
+                  )}
                 </div>
                 <div className="mb-3">
                   <label htmlFor="accounts" className="form-label">
-                    accounts
+                    Account
                   </label>
                   <input
                     type="text"
@@ -445,14 +510,19 @@ export const FormDetailsFromUsers = ({
                     onChange={handleInputChange}
                     value={formData.accounts.two}
                     name="accountsTwo"
+                    onBlur={(e) => accountsRegex(e, setErrors, "accountsTwo")}
                   />
-                  <div id="accountsHelp" className="form-text">
-                    accounts error here
-                  </div>
+                  {errors.accountsTwo && (
+                    <div id="accountsHelp" className="form-text text-danger">
+                      For Facebook, LinkedIn & X, open the account in your
+                      browser. Copy the URL from the address bar and paste it
+                      here. For Instagram, enter the account handle.
+                    </div>
+                  )}
                 </div>
                 <div className="mb-3">
                   <label htmlFor="accounts" className="form-label">
-                    accounts
+                    Account
                   </label>
                   <input
                     type="text"
@@ -462,10 +532,15 @@ export const FormDetailsFromUsers = ({
                     onChange={handleInputChange}
                     value={formData.accounts.three}
                     name="accountsThree"
+                    onBlur={(e) => accountsRegex(e, setErrors, "accountsThree")}
                   />
-                  <div id="accountsHelp" className="form-text">
-                    accounts error here
-                  </div>
+                  {errors.accountsThree && (
+                    <div id="accountsHelp" className="form-text text-danger">
+                      For Facebook, LinkedIn & X, open the account in your
+                      browser. Copy the URL from the address bar and paste it
+                      here. For Instagram, enter the account handle.
+                    </div>
+                  )}
                 </div>
               </>
             )}
@@ -473,7 +548,7 @@ export const FormDetailsFromUsers = ({
               <>
                 <div className="mb-3">
                   <label htmlFor="accounts" className="form-label">
-                    accounts
+                    Account
                   </label>
                   <input
                     type="text"
@@ -483,14 +558,19 @@ export const FormDetailsFromUsers = ({
                     onChange={handleInputChange}
                     value={formData.accounts.one}
                     name="accountsOne"
+                    onBlur={(e) => accountsRegex(e, setErrors, "accountsOne")}
                   />
-                  <div id="accountsHelp" className="form-text">
-                    accounts error here
-                  </div>
+                  {errors.accountsOne && (
+                    <div id="accountsHelp" className="form-text text-danger">
+                      For Facebook, LinkedIn & X, open the account in your
+                      browser. Copy the URL from the address bar and paste it
+                      here. For Instagram, enter the account handle.
+                    </div>
+                  )}
                 </div>
                 <div className="mb-3">
                   <label htmlFor="accounts" className="form-label">
-                    accounts
+                    Account
                   </label>
                   <input
                     type="text"
@@ -500,14 +580,19 @@ export const FormDetailsFromUsers = ({
                     onChange={handleInputChange}
                     value={formData.accounts.two}
                     name="accountsTwo"
+                    onBlur={(e) => accountsRegex(e, setErrors, "accountsTwo")}
                   />
-                  <div id="accountsHelp" className="form-text">
-                    accounts error here
-                  </div>
+                  {errors.accountsTwo && (
+                    <div id="accountsHelp" className="form-text text-danger">
+                      For Facebook, LinkedIn & X, open the account in your
+                      browser. Copy the URL from the address bar and paste it
+                      here. For Instagram, enter the account handle.
+                    </div>
+                  )}
                 </div>
                 <div className="mb-3">
                   <label htmlFor="accounts" className="form-label">
-                    accounts
+                    Account
                   </label>
                   <input
                     type="text"
@@ -517,14 +602,19 @@ export const FormDetailsFromUsers = ({
                     onChange={handleInputChange}
                     value={formData.accounts.three}
                     name="accountsThree"
+                    onBlur={(e) => accountsRegex(e, setErrors, "accountsThree")}
                   />
-                  <div id="accountsHelp" className="form-text">
-                    accounts error here
-                  </div>
+                  {errors.accountsThree && (
+                    <div id="accountsHelp" className="form-text text-danger">
+                      For Facebook, LinkedIn & X, open the account in your
+                      browser. Copy the URL from the address bar and paste it
+                      here. For Instagram, enter the account handle.
+                    </div>
+                  )}
                 </div>
                 <div className="mb-3">
                   <label htmlFor="accounts" className="form-label">
-                    accounts
+                    Account
                   </label>
                   <input
                     type="text"
@@ -534,10 +624,15 @@ export const FormDetailsFromUsers = ({
                     onChange={handleInputChange}
                     value={formData.accounts.four}
                     name="accountsFour"
+                    onBlur={(e) => accountsRegex(e, setErrors, "accountsFour")}
                   />
-                  <div id="accountsHelp" className="form-text">
-                    accounts error here
-                  </div>
+                  {errors.accountsFour && (
+                    <div id="accountsHelp" className="form-text text-danger">
+                      For Facebook, LinkedIn & X, open the account in your
+                      browser. Copy the URL from the address bar and paste it
+                      here. For Instagram, enter the account handle.
+                    </div>
+                  )}
                 </div>
               </>
             )}
@@ -559,7 +654,7 @@ export const FormDetailsFromUsers = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-50">
+    <form onSubmit={handleSubmit} className={`${Styles.form}`}>
       {renderStep()}
     </form>
   );

@@ -3,8 +3,6 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import Image from "next/image";
-import Logo from "../../../../public/testLogo.jpg";
 import styles from "../Navbar/Navbar.module.css";
 import { PlansBtn } from "./PlansBtn";
 import { HomeBtn } from "./HomeBtn";
@@ -14,6 +12,7 @@ import Cookies from "js-cookie";
 import { DashboardBtn } from "./DashboardBtn";
 import { useEffect, useState } from "react";
 import { NavIcon } from "./NavIcon";
+import DropDownBtn from "./DropDown";
 
 function NavMenu(): JSX.Element | null {
   const [token, setToken] = useState("");
@@ -25,7 +24,7 @@ function NavMenu(): JSX.Element | null {
     // Enable the Navbar component only on the client-side
     setMounted(true);
     console.log("Navbar is mounted");
-  }, []);
+  }, [token]);
 
   if (!mounted) {
     console.log("Navbar is not mounted");
@@ -68,6 +67,9 @@ function NavMenu(): JSX.Element | null {
                   <section>
                     <div>
                       <DashboardBtn />
+                    </div>
+                    <div>
+                      <DropDownBtn />
                     </div>
                   </section>
                 </Nav>

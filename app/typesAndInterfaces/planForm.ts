@@ -15,3 +15,8 @@ export interface PlanForm {
     four?: string;
   };
 }
+
+// type for text input error refs
+export type InputRefs = {
+  [key: string]: React.MutableRefObject<HTMLInputElement | null>;
+};

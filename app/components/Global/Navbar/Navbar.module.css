@@ -40,6 +40,10 @@
   border-radius: 1rem;
 }
 
+.dropDown:hover {
+  cursor: pointer;
+}
+
 /* sm screen */
 @media screen and (max-width: 420px) {
   .off_canvas_body {

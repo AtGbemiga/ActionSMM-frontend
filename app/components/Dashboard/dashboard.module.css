@@ -45,6 +45,15 @@
   cursor: pointer;
 }
 
+.logOut {
+  position: absolute;
+  width: fit-content;
+  right: 1.5rem;
+  top: 3.7rem;
+  background-color: #ffffff;
+  padding: 0.5rem;
+}
+
 /* sm screens */
 @media screen and (max-width: 420px) {
   .linkContainer {
