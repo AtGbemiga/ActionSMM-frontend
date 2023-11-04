@@ -6,9 +6,9 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import styles from "./swiper.module.css";
 
-import img1 from "../../../../public/heroImgO.svg";
+import img1 from "../../../../public/bannerImg.svg";
 import img2 from "../../../../public/testLogo.jpg";
-import img3 from "../../../../public/heroImgO.svg";
+import img3 from "../../../../public/bannerImg.svg";
 import Image from "next/image";
 
 const PostShowcase = (): JSX.Element => {

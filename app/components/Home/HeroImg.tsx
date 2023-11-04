@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Hero from "public/heroimgO.svg";
+import Hero from "public/bannerImg.svg";
 export const HeroImg = () => (
   <Image
     src={Hero}
