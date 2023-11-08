@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import "bootstrap/dist/css/bootstrap.min.css";
-import NavMenu from "./components/Global/Navbar/Navbar";
+import NavMenu from "./components/Global/mainNav/Navbar";
 import { Footer } from "./components/Global/Footer/Footer";
 import { Providers } from "./redux/provider";
 
