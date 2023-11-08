@@ -51,7 +51,16 @@
   right: 1.5rem;
   top: 3.7rem;
   background-color: #ffffff;
-  padding: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  z-index: 1;
+  border-radius: 0.5rem;
+}
+.logOut:hover {
+  cursor: pointer;
+  background-color: #cfd1d4;
 }
 
 /* sm screens */

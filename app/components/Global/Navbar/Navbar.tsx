@@ -3,7 +3,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import styles from "../Navbar/Navbar.module.css";
+import styles from "./navbar.module.css";
 import { PlansBtn } from "./PlansBtn";
 import { HomeBtn } from "./HomeBtn";
 import { LoginBtn } from "./LoginBtn";
