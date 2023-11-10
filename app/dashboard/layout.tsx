@@ -1,7 +1,7 @@
 import styles from "./page.module.css";
 import {
-  NavMenu,
   NavMenuMobile,
+  NavMenu,
 } from "../components/Dashboard/navSection/menu";
 import type { Metadata } from "next";
 
