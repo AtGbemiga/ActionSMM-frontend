@@ -102,7 +102,6 @@ export const Form = (): JSX.Element => {
               value={email}
               required
               aria-required
-              autoFocus
             />
             {email !== "" && email !== undefined && !error && (
               <FontAwesomeIcon
