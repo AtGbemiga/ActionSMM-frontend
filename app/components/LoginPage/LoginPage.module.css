@@ -15,8 +15,10 @@
 .imgs {
   color: #777777;
 }
-.eyeCloseSpan {
+.eyeSpan {
   background-color: #e8f0fe;
   color: #000000;
-  border: none;
+}
+.eyeSpan:hover {
+  cursor: pointer;
 }
