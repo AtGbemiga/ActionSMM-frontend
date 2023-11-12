@@ -2,7 +2,7 @@ import styles from "./page.module.css";
 import {
   NavMenu,
   NavMenuMobile,
-} from "../components/Dashboard/NavSection/menu";
+} from "../components/Dashboard/navSection/DashboardMenu";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
