@@ -9,7 +9,7 @@ export const authFunc = async (
 
   // identifier is either login, signup or reset password
   if (identifier === "login") {
-    url = "http://127.0.0.1:3000/api/v1/auth/login";
+    url = "http://127.0.0.1:4192/api/v1/auth/login";
   } else if (identifier === "signup") {
     url =
       "https://actionsmm-backend-production.up.railway.app/api/v1/auth/register";

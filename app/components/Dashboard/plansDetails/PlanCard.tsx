@@ -57,7 +57,10 @@ export const PlanCard = ({
         <div className="card-body">
           <h6 className="card-title">
             Status: {status}{" "}
-            <Link title="This usually takes less than 24 hours." id="t-1">
+            <Link
+              title="This usually takes less than 24 hours."
+              id="t-1"
+            >
               <ToolTipIcon
                 width="16"
                 height="16"
@@ -115,7 +118,14 @@ export const PlanCard = ({
                 <p>{cta}</p>
                 <section>
                   {status !== "Processing" && (
-                    <Button variant="primary">Open chat</Button>
+                    // This button leads to a chat between the user and the admin about this specific plan
+                    // onclick displays pop up chat component, which can be expanded to full screen
+                    <Button
+                      variant="primary"
+                      onAbort={() => null}
+                    >
+                      Open chat
+                    </Button>
                   )}
                 </section>
               </div>

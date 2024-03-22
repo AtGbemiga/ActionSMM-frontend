@@ -1,0 +1,25 @@
+.form > div > label {
+  display: none;
+}
+.font_awesome_icon {
+  height: 24px;
+  width: 24px;
+  color: #11cc11;
+}
+.login {
+  font-size: 1rem;
+}
+.error_msg {
+  font-size: 0.75rem;
+  color: #cc4542;
+}
+.imgs {
+  color: #777777;
+}
+.eyeSpan {
+  background-color: #e8f0fe;
+  color: #000000;
+}
+.eyeSpan:hover {
+  cursor: pointer;
+}

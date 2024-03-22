@@ -1,7 +1,7 @@
-import { ExtraInfo } from "../components/SignUpPage/ExtraInfo";
-import { Form } from "../components/SignUpPage/Form";
-import { GoogleBtn } from "../components/SignUpPage/GoogleBtn";
-import { Logo } from "../components/SignUpPage/Logo";
+import { ExtraInfo } from "../components/authForm/ExtraInfo";
+import { Form } from "../components/authForm/Form";
+import { GoogleBtn } from "../components/authForm/GoogleBtn";
+import { Logo } from "../components/authForm/Logo";
 import styles from "./page.module.css";
 
 export default function SignUp() {

@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 
 export const logOutFunc = async (): Promise<void> => {
-  const url = "http://127.0.0.1:3000/api/v1/auth/logout";
+  const url = "http://127.0.0.1:4192/api/v1/auth/logout";
 
   // attempt fetch
   const res = await fetch(url, {
