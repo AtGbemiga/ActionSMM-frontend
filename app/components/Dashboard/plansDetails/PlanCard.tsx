@@ -9,8 +9,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import style from "../dashboard.module.css";
 import { ToolTipIcon } from "../../Global/assets/toolTipIcon";
+import { useRouter } from "next/navigation";
 
 export const PlanCard = ({
+  _id,
   planName,
   status,
   startDate,
@@ -22,6 +24,7 @@ export const PlanCard = ({
   cta,
 }: SinglePlan): JSX.Element => {
   const [open, setOpen] = useState(false);
+  const route = useRouter();
   const Link = ({
     id,
     children,
@@ -117,12 +120,14 @@ export const PlanCard = ({
                 <h6>CTA</h6>
                 <p>{cta}</p>
                 <section>
-                  {status !== "Processing" && (
+                  {status === "Active" && (
                     // This button leads to a chat between the user and the admin about this specific plan
                     // onclick displays pop up chat component, which can be expanded to full screen
                     <Button
                       variant="primary"
-                      onAbort={() => null}
+                      onClick={() => {
+                        route.push(`/chat/${_id}`);
+                      }}
                     >
                       Open chat
                     </Button>

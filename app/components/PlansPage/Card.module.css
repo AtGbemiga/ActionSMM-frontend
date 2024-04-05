@@ -15,3 +15,15 @@
   font-size: 1.2rem;
   color: #969696;
 }
+
+/* pseudo-classes */
+
+/* 
+.card *:hover {
+  background-color: #c5ebaa;
+} */
+
+.card:hover,
+.card:hover *:not(a) {
+  background-color: #c5ebaa;
+}

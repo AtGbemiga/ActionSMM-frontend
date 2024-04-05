@@ -1,11 +1,14 @@
-.ul {
+.footerContent {
   display: flex;
+  gap: 2rem;
+}
+
+.ul {
   background-color: #222222;
   color: #aaaaaa;
   margin: 0;
-  padding: 4rem;
+  padding: 4rem 4rem;
   list-style: none;
-  gap: 2rem;
 }
 .ul section li > * {
   color: #aaaaaa;

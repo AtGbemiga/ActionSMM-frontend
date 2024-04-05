@@ -16,27 +16,30 @@ export const Footer = (): JSX.Element => {
   return (
     <>
       <ul className={styles.ul}>
-        <section>
-          <li>
-            <Link href="/">Home</Link>
-          </li>
-          <li>
-            <Link href="/plans">Plans</Link>
-          </li>
-          <li>
-            {!token ? (
-              <Link href="/login">Log in</Link>
-            ) : (
-              <Link href="/dashboard">Dashboard</Link>
-            )}
-          </li>
-        </section>
-        <section>
-          <li>{!token && <Link href="/sign-up">Sign up</Link>}</li>
-          <li>
-            <Link href="/#">Influencer</Link>
-          </li>
-        </section>
+        <h2>ActionSMM</h2>
+        <div className={styles.footerContent}>
+          <section>
+            <li>
+              <Link href="/">Home</Link>
+            </li>
+            <li>
+              <Link href="/plans">Plans</Link>
+            </li>
+          </section>
+          <section>
+            <li>
+              {!token ? (
+                <Link href="/login">Log in</Link>
+              ) : (
+                <Link href="/dashboard">Dashboard</Link>
+              )}
+            </li>
+            <li>{!token && <Link href="/sign-up">Sign up</Link>}</li>
+            <li>
+              <Link href="/#">Influencer</Link>
+            </li>
+          </section>
+        </div>
       </ul>
     </>
   );
