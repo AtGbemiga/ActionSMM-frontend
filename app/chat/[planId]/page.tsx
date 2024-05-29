@@ -2,55 +2,113 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import styles from "./WSFormNode.module.css";
 
-const socket = new WebSocket("127.0.0:4192");
+let ws: WebSocket;
 
 const Page = () => {
   const [isSocketOpen, setIsSocketOpen] = useState(false);
+  const [isConnectionError, setIsConnectionError] = useState(false);
+  const [retryingConnection, setRetryingConnection] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
   const [msg, setMsg] = useState("");
   const [file, setFile] = useState<ArrayBuffer | Blob>();
   const params = useParams();
-
   const planId = params.planId;
-  console.log({ planId });
 
-  // TODO: handle if no planId
+  let [retryCount, setRetryCount] = useState(0);
 
-  // open the socket
   useEffect(() => {
-    socket.addEventListener("open", () => {
-      setIsSocketOpen(true);
-    });
+    connectWebSocket();
+
+    return () => {
+      if (ws) {
+        ws.close();
+      }
+    };
   }, []);
 
-  if (!isSocketOpen) {
-    // TODO: possibly re-route to another page
-    return <div>room</div>;
+  function connectWebSocket() {
+    ws = new WebSocket("ws://localhost:4192");
+
+    ws.onopen = () => {
+      setIsConnectionError(false);
+      setIsSocketOpen(true);
+      setRetryingConnection(false);
+    };
+
+    ws.onclose = () => {
+      setIsSocketOpen(false);
+      setIsConnectionError(true);
+      // Retry connection if not already retrying
+      if (!retryingConnection && retryCount < 6) {
+        retryConnection();
+        setErrMsg("Retrying connection...");
+        setRetryCount(retryCount++);
+      } else {
+        setErrMsg("Connection error");
+      }
+    };
+
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+      setIsConnectionError(true);
+      // Retry connection if not already retrying
+      if (!retryingConnection && retryCount < 6) {
+        retryConnection();
+        setErrMsg("Retrying connection...");
+        setRetryCount(retryCount++);
+      } else {
+        setErrMsg("Connection error");
+      }
+    };
   }
 
-  function sendMessage() {
-    // TODO: This if statement is for test only, msgs should still be sent then saved to the db
-    if (socket.CONNECTING || socket.CLOSING || socket.CLOSED) {
-      return;
-    } else {
-      socket.send(msg);
-    }
+  function retryConnection() {
+    setRetryingConnection(true);
+    setTimeout(() => {
+      connectWebSocket();
+    }, 5000); // Retry after 5 seconds
   }
+
+  function sendMessage() {}
   return (
-    <div>
-      room
-      <input
-        type="text"
-        placeholder="Send message"
-        id="msg"
-      />
-      <input
-        type="file"
-        name="file"
-        id="file"
-      />
-      {/* <button onClick={sendMessage}>Send</button> */}
-    </div>
+    <>
+      {isConnectionError && (
+        <div>
+          {" "}
+          <p style={{ display: "block" }}>Not connected</p>{" "}
+        </div>
+      )}
+
+      {retryingConnection && (
+        <div>
+          <p>{errMsg}</p>
+        </div>
+      )}
+      <article className={styles.BoxNode}>
+        <div className={styles.containerNode}>
+          <input
+            type="text"
+            placeholder="Send message"
+            id="msg"
+            disabled={isConnectionError}
+          />
+          <input
+            type="file"
+            name="file"
+            id="file"
+            disabled={isConnectionError}
+          />
+          <button
+            onClick={sendMessage}
+            disabled={isConnectionError}
+          >
+            Send
+          </button>
+        </div>
+      </article>
+    </>
   );
 };
 

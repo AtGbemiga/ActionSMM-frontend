@@ -1,0 +1,22 @@
+.BoxNode {
+  position: relative;
+  min-height: 50vh;
+  border: 2px solid green;
+  display: flex;
+  justify-content: center;
+}
+.containerNode {
+  height: fit-content;
+  width: 40%;
+  border: 2px solid red;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: absolute;
+  bottom: 0;
+}
+
+.containerNode > input {
+  width: 100%;
+}

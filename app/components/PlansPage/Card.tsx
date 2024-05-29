@@ -43,15 +43,14 @@ export const Card = ({
           <h5>&#8358;{price}</h5>
         </li>
       </ul>
-      <div className="card-body">
-        <Link
-          type="button"
-          href={token ? `/form/${name}` : "/login"}
-          className="btn btn-primary w-100"
-        >
-          Choose
-        </Link>
-      </div>
+
+      <Link
+        type="button"
+        href={token ? `/form/${name}` : "/login"}
+        className="btn btn-primary w-100"
+      >
+        Choose
+      </Link>
     </div>
   );
 };

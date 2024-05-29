@@ -13,9 +13,7 @@ export default function Home(): JSX.Element {
       <section className="position-relative">
         <HeroImg />
       </section>
-      <section className={styles.we_manage_container}>
-        <WeManage />
-      </section>
+
       <article className={styles.starter_plan_ad_container}>
         <StarterPlanAd />
       </article>
